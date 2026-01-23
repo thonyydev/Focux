@@ -25,9 +25,12 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full`}
       >
-        {children}
+        {/* main ocupa toda a tela, mas centraliza o conteúdo com padding no mobile */}
+        <main className="min-h-screen w-full bg-neutral-950 flex items-start sm:items-center justify-center px-4 pb-[env(safe-area-inset-bottom)]">
+          {children}
+        </main>
       </body>
     </html>
   );

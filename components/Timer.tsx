@@ -28,6 +28,8 @@ export default function Timer() {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const hasTriggeredRef = useRef(false);
 
+  const isSmall = typeof window !== "undefined" ? window.innerWidth < 640 : false;
+
   // Atualizar refs
   useEffect(() => {
     modeRef.current = mode;
@@ -287,14 +289,15 @@ export default function Timer() {
     );
   }
 
+  /* dentro do return, substitua a div raiz do componente pelo bloco abaixo */
   return (
     <BlurFade duration={1} delay={0.5}>
-      <div className="flex flex-col items-center gap-6 p-8 rounded-2xl bg-neutral-900/50 backdrop-blur-sm border border-neutral-800 shadow-2xl max-w-lg w-full">
-        {/* Seletor de Modo */}
-        <div className="flex gap-2 p-1 bg-neutral-950/50 rounded-lg">
+      <div className="w-full max-w-md mx-auto p-4 sm:p-8 rounded-2xl bg-neutral-900/60 backdrop-blur-sm border border-neutral-800 shadow-2xl">
+        {/* Seletor de Modo (mobile: compacto; desktop: espaçado) */}
+        <div className="flex gap-2 p-1 rounded-lg justify-center mb-3">
           <button
             onClick={() => handleModeChange("focus")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+            className={`px-3 py-2 rounded-md text-sm font-medium transition-all ${
               mode === "focus"
                 ? "bg-green-500 text-white shadow-lg"
                 : "text-gray-400 hover:text-white"
@@ -304,7 +307,7 @@ export default function Timer() {
           </button>
           <button
             onClick={() => handleModeChange("break")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+            className={`px-3 py-2 rounded-md text-sm font-medium transition-all ${
               mode === "break"
                 ? "bg-blue-500 text-white shadow-lg"
                 : "text-gray-400 hover:text-white"
@@ -314,7 +317,7 @@ export default function Timer() {
           </button>
           <button
             onClick={() => handleModeChange("longBreak")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+            className={`px-3 py-2 rounded-md text-sm font-medium transition-all ${
               mode === "longBreak"
                 ? "bg-purple-500 text-white shadow-lg"
                 : "text-gray-400 hover:text-white"
@@ -324,34 +327,36 @@ export default function Timer() {
           </button>
         </div>
 
-        {/* Timer Display */}
-        <div className="text-8xl font-mono font-bold tracking-wider text-white drop-shadow-lg">
-          {format(seconds)}
+        {/* Timer Display: fonte responsiva */}
+        <div className="text-white text-center select-none">
+          <div className="text-4xl sm:text-8xl font-mono font-bold tracking-wider drop-shadow-sm">
+            {format(seconds)}
+          </div>
+
+          {/* Indicador de progresso (pequeno em mobile) */}
+          <div className="flex gap-2 justify-center mt-3 mb-4">
+            {[0, 1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all ${
+                  i < focusCount
+                    ? "bg-green-500 shadow-green-500/50"
+                    : "bg-neutral-800"
+                }`}
+              />
+            ))}
+          </div>
         </div>
 
-        {/* Indicador de Progresso */}
-        <div className="flex gap-2">
-          {[0, 1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className={`w-3 h-3 rounded-full transition-all ${
-                i < focusCount
-                  ? "bg-green-500 shadow-lg shadow-green-500/50"
-                  : "bg-neutral-800"
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* Controles */}
-        <div className="flex gap-3">
+        {/* Controles: mobile empilha, desktop inline */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:justify-center">
           <button
             onClick={() => setRunning((r) => !r)}
             disabled={seconds === 0}
-            className={`px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 ${
+            className={`w-full sm:w-auto px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-102 disabled:opacity-50 ${
               running
-                ? "bg-red-500 text-white hover:bg-red-600 shadow-lg shadow-red-500/30"
-                : "bg-green-500 text-white hover:bg-green-600 shadow-lg shadow-green-500/30"
+                ? "bg-red-500 text-white hover:bg-red-600"
+                : "bg-green-500 text-white hover:bg-green-600"
             }`}
           >
             {running ? "Pausar" : "Iniciar"}
@@ -359,17 +364,15 @@ export default function Timer() {
 
           <button
             onClick={reset}
-            className="px-6 py-3 rounded-lg bg-neutral-800 text-white hover:bg-neutral-700 transition-all transform hover:scale-105 font-semibold"
+            className="w-full sm:w-auto px-6 py-3 rounded-lg bg-neutral-800 text-white hover:bg-neutral-700 font-semibold"
           >
             Resetar
           </button>
         </div>
 
-        {/* Estatísticas */}
-        <div className="flex flex-col items-center gap-2 text-neutral-300">
-          <div className="text-sm text-neutral-500">
-            {focusCount} de 4 sessões até a pausa longa
-          </div>
+        {/* Estatísticas (pequeno e leve) */}
+        <div className="text-center mt-3 text-xs text-neutral-400">
+          {focusCount} de 4 sessões até a pausa longa
         </div>
         <BorderBeam duration={10} size={200} />
       </div>
