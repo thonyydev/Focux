@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/contexts/AuthContext";
+import AppDock, { DockItem } from "@/components/AppDock";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,12 +27,16 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* main ocupa toda a tela, mas centraliza o conteúdo com padding no mobile */}
-        <main className="min-h-screen w-full bg-neutral-950 flex items-start sm:items-center justify-center px-4 pb-[env(safe-area-inset-bottom)]">
+        <AuthProvider>
           {children}
-        </main>
+
+          {/* Dock global */}
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+            <AppDock />
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );
