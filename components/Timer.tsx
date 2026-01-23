@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import confetti from "canvas-confetti";
 import { BorderBeam } from "@/components/ui/border-beam";
+import { logout } from "@/lib/auth";
 import { BlurFade } from "./ui/blur-fade";
 
 type Mode = "focus" | "break" | "longBreak";
@@ -36,6 +37,11 @@ export default function Timer() {
   useEffect(() => {
     focusCountRef.current = focusCount;
   }, [focusCount]);
+
+  const handleLogout = async () => {
+    await logout();
+    console.log("Usuário deslogado com sucesso");
+  };
 
   // Carregar estado salvo (apenas no cliente)
   useEffect(() => {
@@ -362,6 +368,13 @@ export default function Timer() {
             className="px-6 py-3 rounded-lg bg-neutral-800 text-white hover:bg-neutral-700 transition-all transform hover:scale-105 font-semibold"
           >
             Resetar
+          </button>
+
+          <button
+            onClick={handleLogout}
+            className="px-6 py-3 rounded-lg bg-neutral-800 text-white hover:bg-neutral-700 transition-all transform hover:scale-105 font-semibold"
+          >
+            Deslogar
           </button>
         </div>
 
