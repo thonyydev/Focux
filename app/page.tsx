@@ -2,6 +2,13 @@ import Timer from "@/components/Timer";
 import { AnimatedGradientText } from "@/components/ui/animated-gradient-text";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { LightRays } from "@/components/ui/light-rays";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Focux – Pomodoro Timer Online para Produtividade",
+  description: "A simple Pomodoro timer to boost your productivity.",
+};
+
 
 export default function Home() {
   return (

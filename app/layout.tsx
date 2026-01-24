@@ -17,6 +17,20 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Focux",
   description: "A simple Pomodoro timer to boost your productivity.",
+  keywords: ["pomodoro", "produtividade", "foco", "timer"],
+  openGraph: {
+    title: "Focux — Pomodoro e Produtividade",
+    description:
+      "Use Focux para organizar seus ciclos de foco e aumentar sua produtividade.",
+    url: "https://focux.app",
+    images: [
+      {
+        url: "https://focux.app/og-image.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
