@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     url: "https://focux.app",
     images: [
       {
-        url: "https://focux.app/og-image.png",
+        url: "https://focux.app/images/og-image.png",
         width: 1200,
         height: 630,
       },
