@@ -349,7 +349,7 @@ export default function Timer() {
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-neutral-800/20 to-transparent blur-xl scale-110" />
 
           {/* Timer */}
-          <div className="relative z-10 flex flex-col items-center gap-2 sm:gap-3 py-6 sm:py-12">
+          <div className="relative z-10 flex flex-col items-center gap-2 sm:gap-3 py-6 sm:py-0">
             <div className="text-7xl sm:text-8xl md:text-9xl font-bold tabular-nums tracking-tight bg-gradient-to-br from-white via-white to-gray-300 bg-clip-text text-transparent drop-shadow-2xl">
               {format(seconds)}
             </div>
