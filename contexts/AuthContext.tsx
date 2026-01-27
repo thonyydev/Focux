@@ -3,7 +3,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
-import { doc, onSnapshot, setDoc } from "firebase/firestore";
+import {
+  doc,
+  onSnapshot,
+  setDoc,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
 export type TimerSettings = {
   focus: number;
@@ -112,11 +118,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      await setDoc(
-        doc(db, "users", user.uid),
-        { timerSettings: settings },
-        { merge: true },
-      );
+      const userRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userRef);
+
+      const updates: any = { timerSettings: settings };
+      const data = docSnap.exists() ? docSnap.data() : {};
+
+      // Se não existir dados do usuário (ou estiver incompleto), preenche
+      if (!data.email) {
+        updates.email = user.email;
+        console.log("Email do usuário:", user.email);
+      }
+      if (data.isPremium === undefined) {
+        updates.isPremium = false;
+        console.log("Premium do usuário:", false);
+      }
+      if (!data.createdAt) {
+        updates.createdAt = serverTimestamp();
+        console.log("Data de criação do usuário:", serverTimestamp());
+      }
+
+      await setDoc(userRef, updates, { merge: true });
     } catch (error) {
       console.error("Error updating timer settings:", error);
       throw error;
