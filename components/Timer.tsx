@@ -5,14 +5,9 @@ import confetti from "canvas-confetti";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { logout } from "@/lib/auth";
 import { BlurFade } from "./ui/blur-fade";
+import { useAuth } from "@/contexts/AuthContext";
 
 type Mode = "focus" | "break" | "longBreak";
-
-const TIMES = {
-  focus: 25 * 60, // 25 minutos
-  break: 5 * 60, // 5 minutos
-  longBreak: 15 * 60, // 15 minutos
-};
 
 const modeEmoji = {
   focus: "🎯",
@@ -29,13 +24,20 @@ const modeText = {
 const STORAGE_KEY = "focux-timer";
 
 export default function Timer() {
+  const { timerSettings, updateTimerSettings } = useAuth();
   const [mode, setMode] = useState<Mode>("focus");
-  const [seconds, setSeconds] = useState(TIMES.focus);
+  const [seconds, setSeconds] = useState(25 * 60); // Default fallback
   const [running, setRunning] = useState(false);
   const [sessionsCompleted, setSessionsCompleted] = useState(0);
   const [focusCount, setFocusCount] = useState(0);
   const [isInitialized, setIsInitialized] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [tempSettings, setTempSettings] = useState({
+    focus: 25,
+    break: 5,
+    longBreak: 15,
+  });
 
   const modeRef = useRef<Mode>(mode);
   const focusCountRef = useRef<number>(focusCount);
@@ -54,6 +56,35 @@ export default function Timer() {
   const handleLogout = async () => {
     await logout();
     console.log("Usuário deslogado com sucesso");
+  };
+
+  const handleOpenSettings = () => {
+    setTempSettings({
+      focus: Math.floor(timerSettings.focus / 60),
+      break: Math.floor(timerSettings.break / 60),
+      longBreak: Math.floor(timerSettings.longBreak / 60),
+    });
+    setShowSettingsModal(true);
+  };
+
+  const handleSaveSettings = async () => {
+    const newSettings = {
+      focus: tempSettings.focus * 60,
+      break: tempSettings.break * 60,
+      longBreak: tempSettings.longBreak * 60,
+    };
+    await updateTimerSettings(newSettings);
+    setShowSettingsModal(false);
+
+    // Se o timer não estiver rodando, atualiza o tempo atual se estiver no modo correspondente
+    // Isso é útil para feedback imediato
+    if (!running) {
+      setSeconds(newSettings[mode]);
+    }
+  };
+
+  const handleCancelSettings = () => {
+    setShowSettingsModal(false);
   };
 
   // Carregar estado salvo (apenas no cliente)
@@ -96,6 +127,15 @@ export default function Timer() {
       }),
     );
   }, [mode, seconds, running, sessionsCompleted, focusCount, isInitialized]);
+
+  // Atualizar seconds quando timerSettings mudar, SE não estiver rodando e não tiver salvo no localStorage (ou seja, comportamento inicial/resetado)
+  // Mas cuidado para não sobrescrever o estado atual se estiver no meio de um timer.
+  // Vamos simplificar: se carregar settings e não tiver nada salvo/rodando, atualiza.
+  useEffect(() => {
+    if (isInitialized && !running && !localStorage.getItem(STORAGE_KEY)) {
+      setSeconds(timerSettings[mode]);
+    }
+  }, [timerSettings, isInitialized]);
 
   // Atualizar título da página dinamicamente
   useEffect(() => {
@@ -165,7 +205,7 @@ export default function Timer() {
       const nextFocus = focusCountRef.current + 1;
       if (nextFocus >= 4) {
         setMode("longBreak");
-        setSeconds(TIMES.longBreak);
+        setSeconds(timerSettings.longBreak);
         setFocusCount(0);
         TriggerConfetti();
         notify(
@@ -174,7 +214,7 @@ export default function Timer() {
         );
       } else {
         setMode("break");
-        setSeconds(TIMES.break);
+        setSeconds(timerSettings.break);
         setFocusCount(nextFocus);
         notify(
           "Pausa Curta",
@@ -183,7 +223,7 @@ export default function Timer() {
       }
     } else {
       setMode("focus");
-      setSeconds(TIMES.focus);
+      setSeconds(timerSettings.focus);
       notify(
         "Hora de Focar!",
         "Vamos lá! Nova sessão de foco começando agora.",
@@ -299,7 +339,7 @@ export default function Timer() {
   const confirmReset = () => {
     setRunning(false);
     setMode("focus");
-    setSeconds(TIMES.focus);
+    setSeconds(timerSettings.focus);
     setFocusCount(0);
     hasTriggeredRef.current = false;
     setShowResetModal(false);
@@ -309,7 +349,7 @@ export default function Timer() {
     if (typeof window === "undefined") return;
     localStorage.removeItem(STORAGE_KEY);
     setMode("focus");
-    setSeconds(TIMES.focus);
+    setSeconds(timerSettings.focus);
     setRunning(false);
     setSessionsCompleted(0);
     setFocusCount(0);
@@ -319,7 +359,7 @@ export default function Timer() {
   const handleModeChange = (newMode: Mode) => {
     hasTriggeredRef.current = false;
     setMode(newMode);
-    setSeconds(TIMES[newMode]);
+    setSeconds(timerSettings[newMode]);
   };
 
   if (!isInitialized) {
@@ -332,6 +372,97 @@ export default function Timer() {
 
   return (
     <>
+      {/* Modal de Configurações */}
+      {showSettingsModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="relative bg-gradient-to-br from-neutral-900 to-neutral-950 border border-neutral-700/50 rounded-2xl shadow-2xl p-6 sm:p-8 max-w-sm w-full animate-in zoom-in-95 duration-200">
+            {/* Glow de fundo */}
+            <div className="absolute inset-0 pointer-events-none opacity-10 blur-3xl bg-blue-500 rounded-2xl" />
+
+            {/* Conteúdo */}
+            <div className="relative z-10 flex flex-col gap-4 sm:gap-6">
+              {/* Cabeçalho */}
+              <div className="flex flex-col items-center gap-3 text-center">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/50 flex items-center justify-center">
+                  <span className="text-3xl sm:text-4xl">⚙️</span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white">
+                  Configurações
+                </h3>
+              </div>
+
+              {/* Inputs */}
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm font-medium text-neutral-300">
+                    Foco (minutos)
+                  </label>
+                  <input
+                    type="number"
+                    value={tempSettings.focus}
+                    onChange={(e) =>
+                      setTempSettings({
+                        ...tempSettings,
+                        focus: Number(e.target.value),
+                      })
+                    }
+                    className="w-full bg-neutral-800 border border-neutral-700/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm font-medium text-neutral-300">
+                    Pausa Curta (minutos)
+                  </label>
+                  <input
+                    type="number"
+                    value={tempSettings.break}
+                    onChange={(e) =>
+                      setTempSettings({
+                        ...tempSettings,
+                        break: Number(e.target.value),
+                      })
+                    }
+                    className="w-full bg-neutral-800 border border-neutral-700/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm font-medium text-neutral-300">
+                    Pausa Longa (minutos)
+                  </label>
+                  <input
+                    type="number"
+                    value={tempSettings.longBreak}
+                    onChange={(e) =>
+                      setTempSettings({
+                        ...tempSettings,
+                        longBreak: Number(e.target.value),
+                      })
+                    }
+                    className="w-full bg-neutral-800 border border-neutral-700/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                  />
+                </div>
+              </div>
+
+              {/* Botões */}
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                <button
+                  onClick={handleCancelSettings}
+                  className="flex-1 px-4 sm:px-6 py-3 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleSaveSettings}
+                  className="flex-1 px-4 sm:px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-semibold shadow-lg shadow-blue-500/40 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                >
+                  Salvar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Modal de Confirmação */}
       {showResetModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
@@ -349,11 +480,11 @@ export default function Timer() {
                 <h3 className="text-xl sm:text-2xl font-bold text-white">
                   Resetar Timer?
                 </h3>
-                <p className="text-sm sm:text-base text-neutral-400">
-                  Tem certeza que deseja resetar o timer? Todo o progresso atual
-                  será perdido.
-                </p>
               </div>
+              <p className="text-sm sm:text-base text-neutral-400 text-center">
+                Tem certeza que deseja resetar o timer? Todo o progresso atual
+                será perdido.
+              </p>
 
               {/* Botões */}
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
@@ -491,6 +622,12 @@ export default function Timer() {
                 className="flex-1 sm:flex-none px-5 sm:px-6 py-3 sm:py-4 rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900 text-white hover:from-neutral-700 hover:to-neutral-800 transition-all duration-300 transform hover:scale-105 active:scale-95 font-bold border border-neutral-700/50 shadow-lg text-xl"
               >
                 ↻
+              </button>
+              <button
+                onClick={handleOpenSettings}
+                className="flex-1 sm:flex-none px-5 sm:px-6 py-3 sm:py-4 rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900 text-white hover:from-neutral-700 hover:to-neutral-800 transition-all duration-300 transform hover:scale-105 active:scale-95 font-bold border border-neutral-700/50 shadow-lg text-xl"
+              >
+                ⚙️
               </button>
             </div>
           </div>
