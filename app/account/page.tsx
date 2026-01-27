@@ -14,14 +14,16 @@ export default function AccountPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-neutral-400">
+      <div className="min-h-screen flex items-center justify-center text-neutral-400 bg-neutral-950">
         Carregando...
       </div>
     );
   }
 
   if (!user) {
-    router.push("/auth/login");
+    setTimeout(() => {
+      router.push("/auth/login");
+    }, 500);
     return null;
   }
 
