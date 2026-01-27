@@ -33,8 +33,10 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
+      console.log("User logged in successfully");
       router.push("/");
     } catch (err: any) {
+      console.error("Login failed:", err);
       setError("Credenciais inválidas. Tente novamente.");
     } finally {
       setIsLoading(false);
