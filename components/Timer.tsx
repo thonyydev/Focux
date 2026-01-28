@@ -348,12 +348,6 @@ export default function Timer() {
   const resetAll = () => {
     if (typeof window === "undefined") return;
     localStorage.removeItem(STORAGE_KEY);
-    setMode("focus");
-    setSeconds(timerSettings.focus);
-    setRunning(false);
-    setSessionsCompleted(0);
-    setFocusCount(0);
-    hasTriggeredRef.current = false;
   };
 
   const handleModeChange = (newMode: Mode) => {
