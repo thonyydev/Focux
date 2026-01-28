@@ -136,7 +136,7 @@ export default async function BlogPostPage({ params }: Props) {
           prose-li:text-neutral-400
           prose-blockquote:border-l-neutral-700 prose-blockquote:bg-neutral-900/50 prose-blockquote:px-6 prose-blockquote:py-2 prose-blockquote:rounded-r-lg prose-blockquote:text-neutral-300 prose-blockquote:not-italic
           prose-img:rounded-2xl prose-img:border prose-img:border-neutral-800
-          prose-hr:border-neutral-800
+          prose-hr:border-neutral-800 prose prose-lg dark:prose-invert max-w-none
         `}
         >
           <MDXRemote source={post.content} />
