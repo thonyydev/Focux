@@ -22,7 +22,7 @@ export default function AccountPage() {
 
   if (!user) {
     setTimeout(() => {
-      router.push("/auth/login");
+      router.push("/auth/register");
     }, 500);
     return null;
   }
