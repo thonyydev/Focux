@@ -1,6 +1,14 @@
 "use client";
 
-import { Timer, Crown, User, Book, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  Timer,
+  Crown,
+  User,
+  Book,
+  ChevronDown,
+  ChevronUp,
+  BarChart3,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
@@ -25,6 +33,11 @@ export default function AppDock() {
       icon: <Crown size={20} />,
       label: "Premium",
       onClick: () => router.push("/upgrade"),
+    },
+    {
+      icon: <BarChart3 size={20} />,
+      label: "Analytics",
+      onClick: () => router.push("/analytics"),
     },
     {
       icon: <Book size={20} />,

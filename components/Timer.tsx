@@ -5,6 +5,7 @@ import confetti from "canvas-confetti";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { logout } from "@/lib/auth";
 import { BlurFade } from "./ui/blur-fade";
+import { saveSession } from "@/lib/db";
 import { useAuth } from "@/contexts/AuthContext";
 
 type Mode = "focus" | "break" | "longBreak";
@@ -24,7 +25,7 @@ const modeText = {
 const STORAGE_KEY = "focux-timer";
 
 export default function Timer() {
-  const { timerSettings, updateTimerSettings } = useAuth();
+  const { timerSettings, updateTimerSettings, user } = useAuth();
   const [mode, setMode] = useState<Mode>("focus");
   const [seconds, setSeconds] = useState(25 * 60); // Default fallback
   const [running, setRunning] = useState(false);
@@ -197,10 +198,21 @@ export default function Timer() {
 
   // Transição de fases
   const nextPhase = () => {
+    if (hasTriggeredRef.current) return;
+    hasTriggeredRef.current = true;
+
     playBeep();
 
     if (modeRef.current === "focus") {
       setSessionsCompleted((p) => p + 1);
+
+      // Salvar sessão no Firestore se usuário estiver logado
+      if (user) {
+        saveSession(user.uid, {
+          mode: "focus",
+          duration: timerSettings.focus,
+        });
+      }
 
       const nextFocus = focusCountRef.current + 1;
       if (nextFocus >= 4) {
