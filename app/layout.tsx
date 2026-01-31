@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import AppDock, { DockItem } from "@/components/AppDock";
+import CookieBanner from "@/components/CookieBanner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,6 +49,7 @@ export default function RootLayout({
 
           {/* Dock global */}
           <AppDock />
+          <CookieBanner />
         </AuthProvider>
       </body>
     </html>
