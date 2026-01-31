@@ -6,16 +6,62 @@ import { BlurFade } from "@/components/ui/blur-fade";
 import { LightRays } from "@/components/ui/light-rays";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { AuroraText } from "@/components/ui/aurora-text";
+import { db } from "@/lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
 import { Check, Crown, Zap, ChevronLeft } from "lucide-react";
 import { UpgradeFAQ } from "@/components/UpgradeFAQ";
+import confetti from "canvas-confetti";
 
-export default function UpgradePage() {
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, Suspense } from "react";
+
+function UpgradeContent() {
   const { user, isPremium, loading } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const handleSubscribe = (plan: string) => {
-    // Placeholder for payment integration
-    console.log(`User selected plan: ${plan}`);
-    alert(`Integração de pagamento em breve! Plano escolhido: ${plan}`);
+  useEffect(() => {
+    if (searchParams.get("success") === "true") {
+      TriggerConfetti();
+    }
+    if (searchParams.get("canceled") === "true") {
+      alert("Checkout cancelado.");
+    }
+  }, [searchParams]);
+
+  const handleSubscribe = async (selectedPlan: "monthly" | "vitalicio") => {
+    if (!user) {
+      alert("Faça login para assinar.");
+      router.push("/auth/login");
+      return;
+    }
+
+    const planKey = selectedPlan === "vitalicio" ? "lifetime" : "monthly";
+
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          plan: planKey,
+          userId: user.uid,
+          userEmail: user.email,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Erro ao iniciar checkout. Tente novamente.");
+      }
+    } catch (error) {
+      console.error("Erro no checkout:", error);
+      alert("Erro ao conectar com o serviço de pagamento.");
+    }
   };
 
   if (loading) {
@@ -24,6 +70,62 @@ export default function UpgradePage() {
         <p className="text-neutral-400">Carregando...</p>
       </div>
     );
+  }
+
+  function SideCannons() {
+    const end = Date.now() + 3 * 1000; // 3 seconds
+    const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
+    const frame = () => {
+      if (Date.now() > end) return;
+      confetti({
+        particleCount: 2,
+        angle: 60,
+        spread: 55,
+        startVelocity: 60,
+        origin: { x: 0, y: 0.5 },
+        colors: colors,
+      });
+      confetti({
+        particleCount: 2,
+        angle: 120,
+        spread: 55,
+        startVelocity: 60,
+        origin: { x: 1, y: 0.5 },
+        colors: colors,
+      });
+      requestAnimationFrame(frame);
+    };
+    frame();
+  }
+
+  function Fireworks() {
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+    const randomInRange = (min: number, max: number) =>
+      Math.random() * (max - min) + min;
+    const interval = window.setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+      const particleCount = 50 * (timeLeft / duration);
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+      });
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+      });
+    }, 250);
+  }
+
+  function TriggerConfetti() {
+    SideCannons();
+    Fireworks();
   }
 
   return (
@@ -90,7 +192,7 @@ export default function UpgradePage() {
               </ul>
 
               <button
-                onClick={() => handleSubscribe("mensal")}
+                onClick={() => handleSubscribe("monthly")}
                 disabled={isPremium}
                 className={`w-full py-4 rounded-xl font-medium transition-all ${
                   isPremium
@@ -98,7 +200,7 @@ export default function UpgradePage() {
                     : "bg-white text-black hover:bg-neutral-200"
                 }`}
               >
-                {isPremium ? "Plano Atual (ou Superior)" : "Assinar Agora"}
+                {isPremium ? "Você já é Premium" : "Assinar Agora"}
               </button>
             </div>
           </BlurFade>
@@ -158,7 +260,9 @@ export default function UpgradePage() {
                     : "bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 shadow-orange-500/20"
                 }`}
               >
-                {isPremium ? "Você já é Premium" : "Garantir Acesso Vitalício"}
+                {isPremium
+                  ? "Muito obrigado pelo apoio!"
+                  : "Garantir Acesso Vitalício"}
               </button>
 
               <BorderBeam
@@ -190,5 +294,13 @@ export default function UpgradePage() {
         </BlurFade>
       </div>
     </div>
+  );
+}
+
+export default function UpgradePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-neutral-950" />}>
+      <UpgradeContent />
+    </Suspense>
   );
 }

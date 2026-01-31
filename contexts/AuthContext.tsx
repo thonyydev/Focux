@@ -32,6 +32,10 @@ type AuthContextType = {
   premiumLoading: boolean;
   timerSettings: TimerSettings;
   updateTimerSettings: (settings: TimerSettings) => Promise<void>;
+  plan: "monthly" | "lifetime" | null;
+  badges: string[];
+  displayName: string | null;
+  updateDisplayName: (name: string) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -41,6 +45,10 @@ const AuthContext = createContext<AuthContextType>({
   premiumLoading: true,
   timerSettings: DEFAULT_SETTINGS,
   updateTimerSettings: async () => {},
+  plan: null,
+  badges: [],
+  displayName: null,
+  updateDisplayName: async () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -48,6 +56,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const [isPremium, setIsPremium] = useState(false);
+  const [plan, setPlan] = useState<"monthly" | "lifetime" | null>(null);
+  const [badges, setBadges] = useState<string[]>([]);
+  const [displayName, setDisplayName] = useState<string | null>(null);
   const [premiumLoading, setPremiumLoading] = useState(true);
   const [timerSettings, setTimerSettings] =
     useState<TimerSettings>(DEFAULT_SETTINGS);
@@ -66,6 +77,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!user) {
       setIsPremium(false);
+      setPlan(null);
+      setBadges([]);
+      setDisplayName(null);
       // Carregar configurações de convidado do localStorage
       if (typeof window !== "undefined") {
         const saved = localStorage.getItem(GUEST_SETTINGS_KEY);
@@ -92,6 +106,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (snap.exists()) {
         const data = snap.data();
         setIsPremium(!!data.isPremium);
+        setPlan(data.plan || null);
+        setBadges(data.badges || []);
+        setDisplayName(data.displayName || null);
+
         if (data.timerSettings) {
           setTimerSettings(data.timerSettings);
         } else {
@@ -99,6 +117,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       } else {
         setIsPremium(false);
+        setPlan(null);
+        setBadges([]);
+        setDisplayName(null);
         setTimerSettings(DEFAULT_SETTINGS);
       }
       setPremiumLoading(false);
@@ -145,6 +166,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const updateDisplayName = async (name: string) => {
+    if (!user) return;
+    try {
+      const userRef = doc(db, "users", user.uid);
+      await setDoc(userRef, { displayName: name }, { merge: true });
+    } catch (error) {
+      console.error("Error updating display name:", error);
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -154,6 +186,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         premiumLoading,
         timerSettings,
         updateTimerSettings,
+        plan,
+        badges,
+        displayName,
+        updateDisplayName,
       }}
     >
       {children}
