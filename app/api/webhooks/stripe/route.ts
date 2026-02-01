@@ -42,6 +42,10 @@ export async function POST(req: Request) {
         updates.badges = ["early-supporter"];
       }
 
+      if (session.customer) {
+        updates.stripeCustomerId = session.customer;
+      }
+
       // If it's a subscription, we might want to store the subscription ID too
       if (session.subscription) {
         updates.subscriptionId = session.subscription;

@@ -159,7 +159,27 @@ export default function AccountPage() {
                         : "Sua assinatura renova automaticamente."}
                     </div>
                     {plan !== "lifetime" && (
-                      <button className="text-sm text-white underline hover:text-neutral-300">
+                      <button
+                        onClick={async () => {
+                          try {
+                            const res = await fetch("/api/portal", {
+                              method: "POST",
+                              body: JSON.stringify({ userId: user.uid }),
+                            });
+                            const data = await res.json();
+                            if (data.url) window.location.href = data.url;
+                            else
+                              alert(
+                                "Erro ao abrir portal: " +
+                                  (data.error || "Desconhecido"),
+                              );
+                          } catch (e) {
+                            console.error(e);
+                            alert("Erro de conexão");
+                          }
+                        }}
+                        className="text-sm text-white underline hover:text-neutral-300"
+                      >
                         Gerenciar
                       </button>
                     )}
