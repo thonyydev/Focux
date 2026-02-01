@@ -13,7 +13,7 @@ export interface DockItem {
 
 export default function AppDock() {
   const router = useRouter();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const items: DockItem[] = [
     {
