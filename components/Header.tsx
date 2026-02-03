@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { BlurFade } from "./ui/blur-fade";
 
 export function Header() {
-  const { user } = useAuth();
+  const { user, displayName } = useAuth();
   const [greeting, setGreeting] = useState("Olá");
 
   useEffect(() => {
@@ -15,11 +15,12 @@ export function Header() {
     else setGreeting("Boa noite");
   }, []);
 
-  // Pegar primeiro nome
-  const firstName = user?.displayName?.split(" ")[0] || "Visitante";
+  // Pegar primeiro nome (priorizar displayName do Firestore, fallback para Auth ou Visitante)
+  const nameToDisplay = displayName || user?.displayName || "Visitante";
+  const firstName = nameToDisplay.split(" ")[0];
 
   return (
-    <BlurFade duration={0.8} delay={0.2} className="w-full max-w-lg mb-8">
+    <BlurFade duration={0.8} delay={0.2} className="w-full max-w-lg mb-4">
       <div className="flex flex-col items-center text-center gap-1">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-900/50 border border-neutral-800 text-xs font-medium text-neutral-400 mb-2">
           <span className="relative flex h-2 w-2">

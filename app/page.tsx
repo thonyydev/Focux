@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center gap-2 bg-neutral-950 text-white">
+    <main className="min-h-screen flex flex-col items-center justify-center bg-neutral-950 text-white">
       <Header />
       <Timer />
       <LightRays />
