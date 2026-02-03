@@ -13,25 +13,25 @@ export const metadata: Metadata = {
 export default function LandingPage() {
   return (
     <main className="min-h-screen bg-neutral-950 text-white px-6">
-      <div className="relative max-w-5xl mx-auto flex flex-col items-center text-center pt-32 pb-24">
+      <div className="relative max-w-5xl mx-auto flex flex-col items-center text-center pt-7 md:pt-32 pb-24">
         {/* Headline */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-3xl">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-3xl leading-none">
           <AuroraText colors={["#16a34a", "#84cc16", "#facc15", "#f97316"]}>
             <TypingAnimation>Foque melhor</TypingAnimation>
           </AuroraText>
         </h1>
         <BlurFade duration={2}>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-3xl">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-3xl leading-none">
             com um timer Pomodoro
           </h1>
         </BlurFade>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-3xl mt-3">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-3xl leading-none">
           <AuroraText colors={["#38bdf8", "#0ea5e9", "#2563eb", "#4f46e5"]}>
             <TypingAnimation>livre de distrações</TypingAnimation>
           </AuroraText>
         </h1>
         {/* Subheadline */}
-        <p className="mt-5 text-neutral-300 text-lg sm:text-xl max-w-2xl">
+        <p className="mt-4 text-neutral-300 text-lg sm:text-xl max-w-2xl">
           Um timer Pomodoro limpo e personalizável, feito para ajudar você a
           manter a consistência e a produtividade todos os dias.
         </p>
@@ -50,7 +50,7 @@ export default function LandingPage() {
         </div>
 
         {/* Benefits */}
-        <div className="mt-20 grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-4xl">
+        <div className="mt-12 md:mt-20 grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-4xl">
           <div className="rounded-2xl bg-neutral-900/60 border border-neutral-800 p-6">
             <h3 className="font-semibold text-lg">
               🎯 Sessões de foco simples
