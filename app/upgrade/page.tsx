@@ -213,7 +213,7 @@ function UpgradeContent() {
 
               <div className="absolute top-0 right-0 m-6">
                 <span className="px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-500 text-xs font-bold border border-yellow-500/20 flex items-center gap-1">
-                  <Zap size={12} fill="currentColor" /> EARLY SUPPORTER
+                  <Zap size={12} fill="currentColor" /> Apoiador Inicial
                 </span>
               </div>
 

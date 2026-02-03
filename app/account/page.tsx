@@ -171,7 +171,7 @@ export default function AccountPage() {
                       </span>
                       {plan === "lifetime" && (
                         <span className="px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-500 text-xs font-bold border border-yellow-500/20 uppercase tracking-wider">
-                          Early Supporter
+                          Apoiador Inicial
                         </span>
                       )}
                     </div>
