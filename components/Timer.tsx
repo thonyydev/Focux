@@ -25,7 +25,7 @@ const modeText = {
 const STORAGE_KEY = "focux-timer";
 
 export default function Timer() {
-  const { timerSettings, updateTimerSettings, user } = useAuth();
+  const { timerSettings, updateTimerSettings, user, preferences } = useAuth();
   const [mode, setMode] = useState<Mode>("focus");
   const [seconds, setSeconds] = useState(25 * 60); // Default fallback
   const [running, setRunning] = useState(false);
@@ -160,6 +160,8 @@ export default function Timer() {
 
   // Som
   const playBeep = () => {
+    if (!preferences?.soundEnabled) return;
+
     try {
       const ctx = new (
         window.AudioContext || (window as any).webkitAudioContext
@@ -183,6 +185,8 @@ export default function Timer() {
 
   // Notificação
   const notify = (title: string, body?: string) => {
+    if (!preferences?.notificationsEnabled) return;
+
     if (typeof window === "undefined" || !("Notification" in window)) return;
 
     if (Notification.permission === "granted") {

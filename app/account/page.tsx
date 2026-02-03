@@ -21,7 +21,8 @@ import { AccountStats } from "@/components/account/AccountStats";
 import { BorderBeam } from "@/components/ui/border-beam";
 
 export default function AccountPage() {
-  const { user, isPremium, plan, loading } = useAuth();
+  const { user, isPremium, plan, loading, preferences, updatePreferences } =
+    useAuth();
   const router = useRouter();
 
   if (loading) {
@@ -66,22 +67,57 @@ export default function AccountPage() {
                   </h3>
                 </div>
                 <div className="divide-y divide-neutral-800">
-                  <div className="flex items-center justify-between p-4 hover:bg-neutral-800/50 transition cursor-pointer group">
+                  <div
+                    onClick={() =>
+                      updatePreferences({
+                        soundEnabled: !preferences.soundEnabled,
+                      })
+                    }
+                    className="flex items-center justify-between p-4 hover:bg-neutral-800/50 transition cursor-pointer group"
+                  >
                     <div className="flex items-center gap-3 text-neutral-300 group-hover:text-white">
                       <Volume2 size={18} />
                       <span>Sons e Efeitos</span>
                     </div>
-                    <div className="w-10 h-5 bg-green-500 rounded-full relative">
-                      <div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></div>
+                    <div
+                      className={`w-10 h-5 rounded-full relative transition-colors ${preferences.soundEnabled ? "bg-green-500" : "bg-neutral-700"}`}
+                    >
+                      <div
+                        className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${preferences.soundEnabled ? "right-1" : "left-1"}`}
+                      ></div>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between p-4 hover:bg-neutral-800/50 transition cursor-pointer group">
+                  <div
+                    onClick={async () => {
+                      if (!preferences.notificationsEnabled) {
+                        const permission =
+                          await Notification.requestPermission();
+                        if (permission === "granted") {
+                          updatePreferences({ notificationsEnabled: true });
+                          new Notification("Focux", {
+                            body: "Notificações ativadas com sucesso!",
+                          });
+                        } else {
+                          alert(
+                            "Você precisa permitir notificações no navegador para ativar esta função.",
+                          );
+                        }
+                      } else {
+                        updatePreferences({ notificationsEnabled: false });
+                      }
+                    }}
+                    className="flex items-center justify-between p-4 hover:bg-neutral-800/50 transition cursor-pointer group"
+                  >
                     <div className="flex items-center gap-3 text-neutral-300 group-hover:text-white">
                       <Bell size={18} />
                       <span>Notificações</span>
                     </div>
-                    <div className="w-10 h-5 bg-neutral-700 rounded-full relative">
-                      <div className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full"></div>
+                    <div
+                      className={`w-10 h-5 rounded-full relative transition-colors ${preferences.notificationsEnabled ? "bg-green-500" : "bg-neutral-700"}`}
+                    >
+                      <div
+                        className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${preferences.notificationsEnabled ? "right-1" : "left-1"}`}
+                      ></div>
                     </div>
                   </div>
                 </div>

@@ -17,12 +17,25 @@ export type TimerSettings = {
   longBreak: number;
 };
 
+export type UserPreferences = {
+  soundEnabled: boolean;
+  notificationsEnabled: boolean;
+  volume: number;
+  ambientSound?: string;
+};
+
 const GUEST_SETTINGS_KEY = "focux-guest-settings";
 
 const DEFAULT_SETTINGS: TimerSettings = {
   focus: 25 * 60,
   break: 5 * 60,
   longBreak: 15 * 60,
+};
+
+const DEFAULT_PREFERENCES: UserPreferences = {
+  soundEnabled: true,
+  notificationsEnabled: false,
+  volume: 50,
 };
 
 type AuthContextType = {
@@ -36,6 +49,8 @@ type AuthContextType = {
   badges: string[];
   displayName: string | null;
   updateDisplayName: (name: string) => Promise<void>;
+  preferences: UserPreferences;
+  updatePreferences: (settings: Partial<UserPreferences>) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -49,6 +64,8 @@ const AuthContext = createContext<AuthContextType>({
   badges: [],
   displayName: null,
   updateDisplayName: async () => {},
+  preferences: DEFAULT_PREFERENCES,
+  updatePreferences: async () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -62,6 +79,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [premiumLoading, setPremiumLoading] = useState(true);
   const [timerSettings, setTimerSettings] =
     useState<TimerSettings>(DEFAULT_SETTINGS);
+  const [preferences, setPreferences] =
+    useState<UserPreferences>(DEFAULT_PREFERENCES);
 
   // 🔐 Auth state
   useEffect(() => {
@@ -109,6 +128,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setPlan(data.plan || null);
         setBadges(data.badges || []);
         setDisplayName(data.displayName || null);
+        if (data.preferences) {
+          setPreferences(data.preferences);
+        } else {
+          setPreferences(DEFAULT_PREFERENCES);
+        }
 
         if (data.timerSettings) {
           setTimerSettings(data.timerSettings);
@@ -120,6 +144,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setPlan(null);
         setBadges([]);
         setDisplayName(null);
+        setPreferences(DEFAULT_PREFERENCES);
         setTimerSettings(DEFAULT_SETTINGS);
       }
       setPremiumLoading(false);
@@ -138,6 +163,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    setTimerSettings(settings);
+
     try {
       const userRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(userRef);
@@ -148,20 +175,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Se não existir dados do usuário (ou estiver incompleto), preenche
       if (!data.email) {
         updates.email = user.email;
-        console.log("Email do usuário:", user.email);
       }
       if (data.isPremium === undefined) {
         updates.isPremium = false;
-        console.log("Premium do usuário:", false);
       }
       if (!data.createdAt) {
         updates.createdAt = serverTimestamp();
-        console.log("Data de criação do usuário:", serverTimestamp());
       }
 
       await setDoc(userRef, updates, { merge: true });
     } catch (error) {
-      console.error("Error updating timer settings:", error);
+      console.error("Error saving timer settings:", error);
       throw error;
     }
   };
@@ -171,9 +195,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const userRef = doc(db, "users", user.uid);
       await setDoc(userRef, { displayName: name }, { merge: true });
+      setDisplayName(name); // creating optimistic update
     } catch (error) {
       console.error("Error updating display name:", error);
       throw error;
+    }
+  };
+
+  const updatePreferences = async (newPrefs: Partial<UserPreferences>) => {
+    if (!user) return;
+    const updated = { ...preferences, ...newPrefs };
+    setPreferences(updated);
+    try {
+      const userRef = doc(db, "users", user.uid);
+      await setDoc(userRef, { preferences: updated }, { merge: true });
+    } catch (error) {
+      console.error("Error updating preferences:", error);
     }
   };
 
@@ -190,6 +227,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         badges,
         displayName,
         updateDisplayName,
+        preferences,
+        updatePreferences,
       }}
     >
       {children}
