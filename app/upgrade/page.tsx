@@ -152,7 +152,9 @@ function UpgradeContent() {
             </h1>
             <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
               Desbloqueie seu potencial máximo com Analytics avançado, histórico
-              em nuvem ilimitado e muito mais.
+              em nuvem ilimitado e muito mais — e também apoie o desenvolvimento
+              contínuo do <strong>Focux</strong>, ajudando a manter o app simples,
+              independente e sempre sem anúncios.
             </p>
           </div>
         </BlurFade>

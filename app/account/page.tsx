@@ -243,7 +243,10 @@ export default function AccountPage() {
 
             {/* Quick Links / Danger Zone */}
             <BlurFade duration={0.5} delay={0.3}>
-              <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-6">
+              <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-6 relative overflow-hidden">
+                <div className="absolute inset-0 z-10 bg-neutral-950/50 backdrop-blur-sm flex items-center justify-center">
+                  <span className="text-white font-medium">Em breve</span>
+                </div>
                 <h3 className="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-4">
                   Zona de Perigo
                 </h3>

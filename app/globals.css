@@ -168,3 +168,13 @@ main {
   width: 100%;
   overflow-x: hidden;
 }
+
+
+button:not(:disabled),
+a,
+[role="button"],
+summary,
+select,
+.cursor-pointer {
+  cursor: pointer;
+}
