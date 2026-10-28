@@ -1,70 +1,117 @@
 # [Focux](https://www.focux.app/)
 
-A minimalist and elegant Pomodoro timer to maximize your productivity
+A minimalist and elegant Pomodoro timer to maximize your productivity.
+
 ## 📋 About The Project
 
-**Focux** is a modern Pomodoro timer web application designed to help you stay focused and boost productivity. With a clean and intuitive interface, Focux makes the Pomodoro Technique accessible and effective for everyone.
+**Focux** is a Pomodoro timer web app (Brazilian Portuguese interface) built to help you stay focused. The core timer is free and ad-free, works without an account, and an optional **Premium** plan adds focus analytics and cloud history while supporting the project's development.
 
 ### ✨ Why Focux?
 
-- **Simplicity first**: Clean interface without distractions
-- **Data persistence**: Your data is automatically saved in the browser
-- **Smart notifications**: Sound and visual alerts when sessions end
-- **Motivational celebrations**: Animated confetti when completing 4 focus sessions
-- **100% free**: No paywall, no ads, no tracking
+- **Simplicity first**: clean interface without distractions
+- **Free core, no ads**: the timer never needs a paywall or ads
+- **Works as a guest**: no account needed to use the timer
+- **Your data follows you**: sign in to keep settings, preferences and session history in the cloud
+- **Measurable focus**: levels, stats and (with Premium) analytics
+
 ## 🚀 Features
 
-### Main Features
+### ⏱️ Pomodoro Timer
 
-- ⏱️ **Traditional Pomodoro Timer**
-  - 25-minute focus sessions
-  - 5-minute short breaks
-  - 15-minute long breaks after 4 sessions
+- Focus, short break and long break modes (defaults: 25 / 5 / 15 minutes)
+- Fully customizable durations in the timer settings
+- Progress saved in the browser, so you can resume after reloading or closing the tab
+- Sound alerts and browser notifications when a session ends (each can be toggled)
+- Confetti celebration when you complete focus sessions
 
-- 💾 **Local Persistence**
-  - Automatically saves your progress
-  - Resume where you left off, even after closing the browser
-  - Completed sessions history
+### 👤 Accounts
 
-- 🔔 **Notifications**
-  - Custom sound alerts
-  - Browser notifications
-  - Visual feedback with animations
+- Sign up and log in with email and password, or with Google
+- Guests keep their timer settings in the browser; logged-in users have them synced through Firestore
+- Completed sessions are saved to your account
+- **My Account** page with:
+  - Personal focus stats and a level based on your total focus time (Iniciante, Focado, Veterano, Mestre, Lendário)
+  - Display name, sound and notification preferences
+  - Your current plan, badges and billing management
 
-- ⚡ **Intuitive Controls**
-  - Quick mode switching
-  - One-click Play/Pause
-  - Instant reset
-  - Auto-start when switching modes
+### 💎 Premium
 
-- 🎨 **Modern Design**
-  - Glassmorphism interface
-  - Smooth blur-fade animations
-  - Animated border beam
-  - Professional color palette
+| Plan | Price | Includes |
+| --- | --- | --- |
+| Monthly | R$ 9,90 / month | Analytics, cloud history, device sync. Cancel any time. |
+| Lifetime | R$ 34,90 one-time | Everything in Monthly, early supporter badge, early access to new features, priority support. |
+
+- Payments are handled by [Stripe](https://stripe.com/) Checkout; subscribers manage or cancel through the Stripe billing portal
+- Premium is granted by a Stripe webhook after a successful checkout
+
+### 📊 Analytics (Premium)
+
+- Total focused time, completed sessions and days with recorded focus
+- Weekly focus chart
+- Recent session history
+
+### 📝 Blog
+
+Product news and updates, written in MDX (`posts/*.mdx`) and published at `/blog`.
+
+### 🔎 SEO & discoverability
+
+- Per-page metadata, canonical URLs, Open Graph and Twitter cards
+- `sitemap.xml`, `robots.txt` and an `llms.txt` summary for AI assistants
+- Structured data (JSON-LD) for the site, FAQ and blog posts
+- Private pages (account, analytics, auth) are marked `noindex`
+
+### 🍪 Privacy
+
+A cookie banner asks for consent; Google Analytics only loads after you accept.
+
 ## 🎯 How to Use
 
 ### Basic Pomodoro Technique
 
 1. **Choose a task** you want to complete
-2. **Start a focus session** (25 minutes)
+2. **Start a focus session** (25 minutes by default)
 3. **Work with dedication** until the timer rings
-4. **Take a short break** (5 minutes)
+4. **Take a short break** (5 minutes by default)
 5. **Repeat** the process
-6. After **4 focus sessions**, take a **long break** (15 minutes)
+6. After **4 focus sessions**, take a **long break** (15 minutes by default)
 
-### App Navigation
+## 🛠️ Built With
 
-- **Mode Buttons**: Click "Focus", "Break" or "Long Break" to switch modes
-- **Start/Pause**: Control the timer with the green/red button
-- **Reset**: Returns the current timer to the beginning
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router) and React 19
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) v4
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/) and Magic UI
+- **Animations**: Motion (Framer Motion)
+- **Charts**: [Recharts](https://recharts.org/)
+- **Auth & Database**: [Firebase](https://firebase.google.com/) (Authentication and Firestore)
+- **Payments**: [Stripe](https://stripe.com/)
+- **Blog**: MDX with `next-mdx-remote` and `gray-matter`
+- **Icons**: [Lucide Icons](https://lucide.dev/)
 
-### Visual Indicators
+## 💻 Running Locally
 
-- 🟢 **Green**: Active focus mode
-- 🔵 **Blue**: Active short break
-- 🟣 **Purple**: Active long break
-- **Green dots**: Show how many sessions you've completed (out of 4)
+```bash
+npm install
+npm run dev
+```
+
+The app runs at [http://localhost:3000](http://localhost:3000). Create a `.env.local` file with:
+
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_FIREBASE_API_KEY`, `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`, `NEXT_PUBLIC_FIREBASE_PROJECT_ID`, `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`, `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`, `NEXT_PUBLIC_FIREBASE_APP_ID` | Firebase web app config |
+| `STRIPE_SECRET_KEY` | Stripe secret key (server only) |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key |
+| `STRIPE_PRICE_MONTHLY`, `STRIPE_PRICE_LIFETIME` | Stripe price IDs for each plan |
+| `STRIPE_WEBHOOK_SECRET` | Signing secret of the webhook endpoint |
+| `NEXT_PUBLIC_BASE_URL` | Site URL, used for Stripe redirects (`http://localhost:3000` locally) |
+| `NEXT_PUBLIC_GOOGLE_ANALYTICS_ID` | Google Analytics measurement ID |
+
+To test Premium locally, forward Stripe events to the webhook endpoint (`/api/webhooks/stripe`, event `checkout.session.completed`) using the [Stripe CLI](https://docs.stripe.com/stripe-cli) and use the signing secret it prints as `STRIPE_WEBHOOK_SECRET`.
+
+Other scripts: `npm run build`, `npm run start` and `npm run lint`.
+
 ## 🤝 Contributing
 
 Contributions are always welcome!
@@ -74,18 +121,11 @@ Contributions are always welcome!
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-## 🛠️ Built With
 
-- **Framework**: [Next.js 14+](https://nextjs.org/) (App Router)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
-- **Animations**: 
-  - Magic UI (Border Beam, Blur Fade)
-- **Icons**: [Lucide Icons](https://lucide.dev/)
 ## 📝 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
 ## 👨‍💻 Author
 
 Created with ❤️ by **Thonyy Dev**
