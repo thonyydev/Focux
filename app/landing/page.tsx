@@ -3,33 +3,48 @@ import { BlurFade } from "@/components/ui/blur-fade";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { LightRays } from "@/components/ui/light-rays";
 import { TypingAnimation } from "@/components/ui/typing-animation";
-import { Metadata } from "next";
+import Link from "next/link";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Focux — Timer Pomodoro Livre de Distrações",
-  description: "Um timer Pomodoro simples para aumentar sua produtividade.",
-};
+  description:
+    "Um timer Pomodoro online, limpo e personalizável, sem anúncios. Ajuste foco e pausas ao seu ritmo e mantenha a consistência todos os dias.",
+  path: "/landing",
+});
 
 export default function LandingPage() {
   return (
     <main className="min-h-screen bg-neutral-950 text-white px-6">
       <div className="relative max-w-5xl mx-auto flex flex-col items-center text-center pt-7 md:pt-32 pb-24">
-        {/* Headline */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-3xl leading-none">
+        {/* Headline: h1 real (texto completo no HTML); as linhas animadas são decorativas */}
+        <h1 className="sr-only">
+          Foque melhor com um timer Pomodoro livre de distrações
+        </h1>
+        <div
+          aria-hidden="true"
+          className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-3xl leading-none"
+        >
           <AuroraText colors={["#16a34a", "#84cc16", "#facc15", "#f97316"]}>
             <TypingAnimation>Foque melhor</TypingAnimation>
           </AuroraText>
-        </h1>
+        </div>
         <BlurFade duration={2}>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-3xl leading-none">
+          <div
+            aria-hidden="true"
+            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-3xl leading-none"
+          >
             com um timer Pomodoro
-          </h1>
+          </div>
         </BlurFade>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-3xl leading-none">
+        <div
+          aria-hidden="true"
+          className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight max-w-3xl leading-none"
+        >
           <AuroraText colors={["#38bdf8", "#0ea5e9", "#2563eb", "#4f46e5"]}>
             <TypingAnimation>livre de distrações</TypingAnimation>
           </AuroraText>
-        </h1>
+        </div>
         {/* Subheadline */}
         <p className="mt-4 text-neutral-300 text-lg sm:text-xl max-w-2xl">
           Um timer Pomodoro limpo e personalizável, feito para ajudar você a
@@ -38,7 +53,7 @@ export default function LandingPage() {
 
         {/* CTA */}
         <div className="mt-10">
-          <a
+          <Link
             href="/"
             className="inline-block px-10 py-4 rounded-2xl 
             bg-gradient-to-r from-cyan-500 to-blue-600 
@@ -46,7 +61,7 @@ export default function LandingPage() {
             hover:scale-105 transition shadow-lg shadow-cyan-500/30"
           >
             Comece a focar agora
-          </a>
+          </Link>
         </div>
 
         {/* Benefits */}
@@ -99,6 +114,22 @@ export default function LandingPage() {
           </div>
         </div>
 
+        {/* O que é Pomodoro (conteúdo textual para busca) */}
+        <section className="mt-24 max-w-3xl w-full text-left">
+          <h2 className="text-2xl font-bold">O que é a técnica Pomodoro?</h2>
+          <p className="mt-4 text-neutral-400 leading-relaxed">
+            A técnica Pomodoro é um método de gestão de tempo criado por
+            Francesco Cirillo no fim dos anos 1980. Você trabalha em blocos de
+            foco de 25 minutos, separados por pausas curtas de 5 minutos. A cada
+            quatro blocos, faz uma pausa longa de 15 a 30 minutos.
+          </p>
+          <p className="mt-4 text-neutral-400 leading-relaxed">
+            No Focux, os tempos padrão são 25 minutos de foco, 5 de pausa curta
+            e 15 de pausa longa, e você pode ajustar todos eles ao seu ritmo.
+            O timer básico é gratuito e não tem anúncios.
+          </p>
+        </section>
+
         {/* Social proof (light) */}
         <div className="mt-24 max-w-3xl w-full">
           <p className="text-neutral-400 italic">
@@ -115,7 +146,7 @@ export default function LandingPage() {
         </p>
 
         <div className="mt-5">
-          <a
+          <Link
             href="/"
             className="inline-block px-10 py-4 rounded-2xl 
             bg-gradient-to-r from-cyan-500 to-blue-600 
@@ -123,7 +154,7 @@ export default function LandingPage() {
             hover:scale-105 transition shadow-lg shadow-cyan-500/30"
           >
             Comece a focar agora
-          </a>
+          </Link>
         </div>
       </div>
       <LightRays />

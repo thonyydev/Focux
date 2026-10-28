@@ -2,6 +2,7 @@ import { BorderBeam } from "@/components/ui/border-beam";
 import { LightRays } from "@/components/ui/light-rays";
 import { getBlogPosts } from "@/lib/mdx";
 import Link from "next/link";
+import { pageMetadata } from "@/lib/site";
 
 // Inline date formatter just in case
 function formatDateClean(dateString: string) {
@@ -16,32 +17,12 @@ function formatDateClean(dateString: string) {
   });
 }
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Blog do Focux — Novidades, atualizações e foco",
   description:
     "Acompanhe as novidades do Focux: atualizações do produto, decisões de design, melhorias de produtividade e bastidores do desenvolvimento.",
-  openGraph: {
-    title: "Blog do Focux",
-    description:
-      "Novidades, atualizações e bastidores do Focux — um app de foco e produtividade minimalista.",
-    url: "https://focux.app/blog",
-    siteName: "Focux",
-    type: "website",
-    images: [
-      {
-        url: "https://focux.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary",
-    title: "Blog do Focux",
-    description:
-      "Novidades e atualizações do Focux, um app minimalista de foco e produtividade.",
-  },
-};
+  path: "/blog",
+});
 
 export default function BlogPage() {
   const posts = getBlogPosts();

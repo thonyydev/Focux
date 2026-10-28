@@ -4,6 +4,8 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import { LightRays } from "@/components/ui/light-rays";
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 // Helper to format date
 function formatDateClean(dateString: string) {
@@ -49,8 +51,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 
   return {
-    title: `${post.title} | Blog do Focux`,
+    title: { absolute: `${post.title} | Blog do Focux` },
     description: post.description,
+    alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.description,
@@ -68,7 +71,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: post.title,
       description: post.description,
       images: ["https://focux.app/images/og-image.png"],
@@ -87,6 +90,20 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <div className="min-h-screen w-full bg-neutral-950 text-neutral-200 pb-24 selection:bg-neutral-700 selection:text-white">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: post.title,
+          description: post.description,
+          datePublished: post.date,
+          inLanguage: "pt-BR",
+          mainEntityOfPage: `${SITE_URL}/blog/${post.slug}`,
+          image: `${SITE_URL}/images/og-image.png`,
+          author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+          publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+        }}
+      />
       <article className="container mx-auto py-24 px-4 max-w-3xl">
         <div className="mb-12">
           <Link

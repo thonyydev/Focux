@@ -39,7 +39,7 @@ export async function getUserSessions(userId: string) {
       };
     });
   } catch (error) {
-    console.error("Erro ao buscar sessões:", error);
+    console.error("Erro ao buscar sessões do usuário:", error);
     return [];
   }
 }
