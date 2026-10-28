@@ -57,14 +57,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: post.title,
       description: post.description,
-      url: `https://focux.app/blog/${post.slug}`,
+      url: `${SITE_URL}/blog/${post.slug}`,
       siteName: "Focux",
       type: "article",
       publishedTime: post.date,
       authors: ["Focux"],
       images: [
         {
-          url: "https://focux.app/images/og-image.png",
+          url: `${SITE_URL}/images/og-image.png`,
           width: 1200,
           height: 630,
         },
@@ -74,7 +74,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: post.title,
       description: post.description,
-      images: ["https://focux.app/images/og-image.png"],
+      images: [`${SITE_URL}/images/og-image.png`],
     },
   };
 }
