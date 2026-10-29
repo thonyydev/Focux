@@ -21,7 +21,7 @@ export function Header() {
   const firstName = nameToDisplay.split(" ")[0];
 
   return (
-    <BlurFade duration={0.8} delay={0.2} className="w-full max-w-lg mb-4">
+    <BlurFade duration={0.8} delay={0.2} className="w-full mb-6">
       <div className="flex flex-col items-center text-center gap-1">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card/50 border border-border text-xs font-medium text-muted-foreground mb-2">
           <span className="relative flex h-2 w-2">
@@ -31,14 +31,14 @@ export function Header() {
           Focux {APP_VERSION}
         </div>
 
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
           {greeting},{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-br from-primary to-lime-300">
             {firstName}
           </span>
         </h1>
 
-        <p className="text-muted-foreground text-sm sm:text-base max-w-[300px] sm:max-w-none">
+        <p className="text-muted-foreground text-sm sm:text-base">
           Pronto para alcançar seus objetivos hoje?
         </p>
       </div>

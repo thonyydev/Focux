@@ -17,8 +17,8 @@ export function DailyProgress() {
   const percent = Math.min(100, (minutes / goal) * 100);
 
   return (
-    <div className="w-full max-w-sm sm:max-w-md md:max-w-lg mb-4 px-4 sm:px-0">
-      <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground mb-2">
+    <div className="w-full rounded-2xl bg-card/60 border border-border p-4">
+      <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
         <span>
           Hoje: {minutes} / {goal} min{minutes >= goal && " 🎉"}
         </span>
