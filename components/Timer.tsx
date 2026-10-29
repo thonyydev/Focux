@@ -8,6 +8,12 @@ import { BlurFade } from "./ui/blur-fade";
 import { saveSession } from "@/lib/db";
 import { useAuth } from "@/contexts/AuthContext";
 import TaskList from "@/components/TaskList";
+import {
+  AMBIENT_LABELS,
+  Ambient,
+  toAmbient,
+  useAmbientSound,
+} from "@/lib/useAmbientSound";
 
 type Mode = "focus" | "break" | "longBreak";
 
@@ -26,7 +32,8 @@ const modeText = {
 const STORAGE_KEY = "focux-timer";
 
 export default function Timer() {
-  const { timerSettings, updateTimerSettings, user, preferences } = useAuth();
+  const { timerSettings, updateTimerSettings, user, preferences, updatePreferences } =
+    useAuth();
   const [mode, setMode] = useState<Mode>("focus");
   const [seconds, setSeconds] = useState(25 * 60); // Default fallback
   const [running, setRunning] = useState(false);
@@ -60,6 +67,11 @@ export default function Timer() {
   useEffect(() => {
     activeTaskRef.current = activeTaskId;
   }, [activeTaskId]);
+
+  // Escolha local vence a salva: visitantes não gravam preferências, mas podem escolher o som.
+  const [ambientChoice, setAmbientChoice] = useState<Ambient | null>(null);
+  const ambient = ambientChoice ?? toAmbient(preferences.ambientSound);
+  useAmbientSound(ambient, running && mode === "focus", preferences.volume);
 
   const handleLogout = async () => {
     await logout();
@@ -381,6 +393,36 @@ export default function Timer() {
     setSeconds(timerSettings[newMode]);
   };
 
+  // Atalhos: Espaço inicia/pausa, R reinicia, 1/2/3 troca o modo.
+  // Ignora campos de texto e botões (o botão focado já reage ao Espaço sozinho) e os modais abertos.
+  useEffect(() => {
+    const modeKeys: Record<string, Mode> = {
+      "1": "focus",
+      "2": "break",
+      "3": "longBreak",
+    };
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (showSettingsModal || showResetModal) return;
+      if ((e.target as Element).closest("input, textarea, select, button, a, [contenteditable]")) return;
+
+      if (e.code === "Space") {
+        if (seconds > 0) setRunning((r) => !r);
+      } else if (e.key.toLowerCase() === "r") {
+        setShowResetModal(true);
+      } else if (e.key in modeKeys) {
+        handleModeChange(modeKeys[e.key]);
+      } else {
+        return;
+      }
+      e.preventDefault();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  });
+
   if (!isInitialized) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -625,6 +667,7 @@ export default function Timer() {
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full">
             <button
               onClick={() => setRunning((r) => !r)}
+              aria-keyshortcuts="Space"
               disabled={seconds === 0}
               className={`w-full sm:flex-1 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-sm sm:text-base transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-xl ${
                 running
@@ -638,6 +681,7 @@ export default function Timer() {
             <div className="flex gap-2 sm:gap-3">
               <button
                 onClick={reset}
+                aria-keyshortcuts="R"
                 className="flex-1 sm:flex-none px-5 sm:px-6 py-3 sm:py-4 rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900 text-white hover:from-neutral-700 hover:to-neutral-800 transition-all duration-300 transform hover:scale-105 active:scale-95 font-bold border border-neutral-700/50 shadow-lg text-xl"
               >
                 ↻
@@ -651,6 +695,27 @@ export default function Timer() {
             </div>
           </div>
 
+          {/* Som ambiente */}
+          <label className="flex items-center gap-2 text-xs sm:text-sm text-neutral-400">
+            <span aria-hidden="true">🎧</span>
+            <select
+              aria-label="Som ambiente (toca durante o foco)"
+              value={ambient}
+              onChange={(e) => {
+                const value = toAmbient(e.target.value);
+                setAmbientChoice(value);
+                updatePreferences({ ambientSound: value });
+              }}
+              className="rounded-lg bg-neutral-900 border border-neutral-700 px-2 py-1 text-neutral-200 focus:outline-none focus:border-neutral-500"
+            >
+              {Object.entries(AMBIENT_LABELS).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+
           {/* Estatísticas */}
           <div className="relative flex flex-col items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-xl bg-neutral-900/50 border border-neutral-800/50">
             <div className="text-xs sm:text-sm font-medium text-neutral-400 text-center">
@@ -659,6 +724,10 @@ export default function Timer() {
               pausa longa
             </div>
           </div>
+
+          <p className="hidden sm:block text-xs text-neutral-500 text-center">
+            Atalhos: Espaço inicia/pausa · R reinicia · 1, 2, 3 trocam o modo
+          </p>
 
           <BorderBeam duration={10} size={200} />
         </div>

@@ -23,6 +23,9 @@ A minimalist and elegant Pomodoro timer to maximize your productivity.
 - Progress saved in the browser, so you can resume after reloading or closing the tab
 - Sound alerts and browser notifications when a session ends (each can be toggled)
 - Confetti celebration when you complete focus sessions
+- Ambient sound while you focus (white noise, brown noise or rain, generated in the browser)
+- Keyboard shortcuts: `Space` start/pause, `R` reset, `1` / `2` / `3` switch mode
+- The remaining time shows in the browser tab title
 
 ### ✅ Tasks, daily goal and streak (logged-in users)
 

@@ -12,7 +12,7 @@ npm run lint    # eslint (flat config, eslint.config.mjs)
 npx tsc --noEmit  # checagem de tipos; não existe script de typecheck
 ```
 
-Não há runner de testes. A lógica de dias seguidos (`lib/stats.ts`) tem um autoteste: `node lib/stats.test.mjs` (Node 22.6+ lê o `.ts` direto). `tsc_output.txt` é um dump de checagem de tipos desatualizado e commitado (UTF-16); ignore-o.
+Não há runner de testes. A lógica de dias seguidos (`lib/stats.ts`) e o gerador de ruído (`lib/noise.ts`) têm autotestes: `node lib/stats.test.mjs` e `node lib/noise.test.mjs` (Node 22.6+ lê o `.ts` direto). `tsc_output.txt` é um dump de checagem de tipos desatualizado e commitado (UTF-16); ignore-o.
 
 ## Stack
 
@@ -37,7 +37,7 @@ Variáveis de ambiente necessárias (`.env.local`): `NEXT_PUBLIC_FIREBASE_*` (AP
 3. `POST /api/portal` busca o `stripeCustomerId` do usuário logado para abrir o portal de cobrança do Stripe.
 O cliente do Stripe vem de `getStripe()` em `lib/stripe.ts`, criado sob demanda (instanciar no topo do módulo quebra o build quando a chave não existe). A `apiVersion` fica só ali.
 
-**Timer (`components/Timer.tsx`, renderizado por `app/page.tsx`)**: a funcionalidade principal. Persiste o estado em andamento no `localStorage` (`STORAGE_KEY`) para sobreviver a recarregamentos, obtém as durações de `timerSettings`, respeita `preferences` (som/notificações/volume) e chama `saveSession` para usuários logados quando uma sessão termina.
+**Timer (`components/Timer.tsx`, renderizado por `app/page.tsx`)**: a funcionalidade principal. Persiste o estado em andamento no `localStorage` (`STORAGE_KEY`) para sobreviver a recarregamentos, obtém as durações de `timerSettings`, respeita `preferences` (som/notificações; `volume` só afeta o som ambiente), toca som ambiente durante o foco (`lib/useAmbientSound.ts`, ruído gerado com Web Audio, sem arquivos), atende atalhos de teclado e mostra o tempo no título da aba e chama `saveSession` para usuários logados quando uma sessão termina.
 
 **Blog:** `lib/mdx.ts` lê `posts/*.mdx` do disco com `gray-matter` (frontmatter: `title`, `date`, `description`), ordenado por data decrescente; renderizado com `next-mdx-remote` em `app/blog/[slug]/page.tsx`.
 
