@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-neutral-950 text-white">
+    <main className="min-h-screen flex flex-col items-center justify-center pb-28 bg-background text-foreground">
       <JsonLd
         data={{
           "@context": "https://schema.org",

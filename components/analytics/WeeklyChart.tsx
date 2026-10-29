@@ -59,13 +59,13 @@ export function WeeklyChart({ sessions }: WeeklyChartProps) {
         <BarChart data={data}>
           <XAxis
             dataKey="name"
-            stroke="#525252"
+            stroke="var(--input)"
             fontSize={12}
             tickLine={false}
             axisLine={false}
           />
           <YAxis
-            stroke="#525252"
+            stroke="var(--input)"
             fontSize={12}
             tickLine={false}
             axisLine={false}
@@ -75,13 +75,13 @@ export function WeeklyChart({ sessions }: WeeklyChartProps) {
             content={({ active, payload }) => {
               if (active && payload && payload.length) {
                 return (
-                  <div className="rounded-lg border border-neutral-800 bg-neutral-900 p-2 shadow-sm">
+                  <div className="rounded-lg border border-border bg-card p-2 shadow-sm">
                     <div className="grid grid-cols-2 gap-2">
                       <div className="flex flex-col">
-                        <span className="text-[0.70rem] uppercase text-neutral-500">
+                        <span className="text-[0.70rem] uppercase text-subtle">
                           {payload[0].payload.fullDate}
                         </span>
-                        <span className="font-bold text-neutral-50">
+                        <span className="font-bold text-foreground">
                           {payload[0].value} minutos
                         </span>
                       </div>

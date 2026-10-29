@@ -63,8 +63,8 @@ function UpgradeContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-neutral-950">
-        <p className="text-neutral-400">Carregando...</p>
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <p className="text-muted-foreground">Carregando...</p>
       </div>
     );
   }
@@ -126,14 +126,14 @@ function UpgradeContent() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground p-6 relative overflow-hidden">
       <LightRays className="opacity-40" />
 
       {/* Back Button */}
       <div className="max-w-5xl mx-auto mb-8 relative z-10">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-900/50 border border-neutral-800 text-neutral-400 hover:text-white transition-colors text-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card/50 border border-border text-muted-foreground hover:text-foreground transition-colors text-sm"
         >
           <ChevronLeft size={16} /> Voltar
         </Link>
@@ -147,7 +147,7 @@ function UpgradeContent() {
                 Focux Premium
               </AuroraText>
             </h1>
-            <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Desbloqueie seu potencial máximo com Analytics avançado, histórico
               em nuvem ilimitado e muito mais — e também apoie o desenvolvimento
               contínuo do <strong>Focux</strong>, ajudando a manter o app simples,
@@ -159,14 +159,14 @@ function UpgradeContent() {
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Plano Mensal */}
           <BlurFade duration={0.8} delay={0.2}>
-            <div className="relative h-full flex flex-col p-8 rounded-3xl bg-neutral-900 border border-neutral-800 hover:border-neutral-700 transition-colors">
+            <div className="relative h-full flex flex-col p-8 rounded-3xl bg-card border border-border hover:border-input transition-colors">
               <div className="mb-8">
-                <h3 className="text-xl font-medium text-neutral-200">Mensal</h3>
+                <h3 className="text-xl font-medium text-foreground/90">Mensal</h3>
                 <div className="mt-4 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold text-white">R$ 9,90</span>
-                  <span className="text-neutral-500">/mês</span>
+                  <span className="text-4xl font-bold text-foreground">R$ 9,90</span>
+                  <span className="text-subtle">/mês</span>
                 </div>
-                <p className="mt-2 text-sm text-neutral-400">
+                <p className="mt-2 text-sm text-muted-foreground">
                   Flexibilidade total. Cancele quando quiser.
                 </p>
               </div>
@@ -180,9 +180,9 @@ function UpgradeContent() {
                 ].map((feature, i) => (
                   <li
                     key={i}
-                    className="flex items-center gap-3 text-sm text-neutral-300"
+                    className="flex items-center gap-3 text-sm text-foreground/80"
                   >
-                    <div className="p-1 rounded-full bg-neutral-800 text-neutral-400">
+                    <div className="p-1 rounded-full bg-secondary text-muted-foreground">
                       <Check size={12} />
                     </div>
                     {feature}
@@ -195,8 +195,8 @@ function UpgradeContent() {
                 disabled={isPremium}
                 className={`w-full py-4 rounded-xl font-medium transition-all ${
                   isPremium
-                    ? "bg-neutral-800 text-neutral-400 cursor-not-allowed"
-                    : "bg-white text-black hover:bg-neutral-200"
+                    ? "bg-secondary text-muted-foreground cursor-not-allowed"
+                    : "bg-primary text-primary-foreground shadow-lg shadow-primary/25 hover:bg-primary/90"
                 }`}
               >
                 {isPremium ? "Você já é Premium" : "Assinar Agora"}
@@ -206,27 +206,27 @@ function UpgradeContent() {
 
           {/* Plano Vitalício */}
           <BlurFade duration={0.8} delay={0.4}>
-            <div className="relative h-full flex flex-col p-8 rounded-3xl bg-neutral-900 border border-yellow-500/20 shadow-2xl shadow-yellow-500/10 hover:border-yellow-500/40 transition-all overflow-hidden">
+            <div className="relative h-full flex flex-col p-8 rounded-3xl bg-card border border-premium/30 shadow-2xl shadow-premium/10 hover:border-premium/50 transition-all overflow-hidden">
               {/* Glow Effect */}
-              <div className="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-yellow-500/20 blur-3xl rounded-full"></div>
+              <div className="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-premium/10 blur-3xl rounded-full"></div>
 
               <div className="absolute top-0 right-0 m-6">
-                <span className="px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-500 text-xs font-bold border border-yellow-500/20 flex items-center gap-1">
+                <span className="px-3 py-1 rounded-full bg-premium/10 text-premium text-xs font-bold border border-premium/30 flex items-center gap-1">
                   <Zap size={12} fill="currentColor" /> Apoiador Inicial
                 </span>
               </div>
 
               <div className="mb-8 relative">
-                <h3 className="text-xl font-medium text-white flex items-center gap-2">
-                  Vitalício <Crown size={16} className="text-yellow-500" />
+                <h3 className="text-xl font-medium text-foreground flex items-center gap-2">
+                  Vitalício <Crown size={16} className="text-premium" />
                 </h3>
                 <div className="mt-4 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold text-white">
+                  <span className="text-4xl font-bold text-foreground">
                     R$ 34,90
                   </span>
-                  <span className="text-neutral-500">único</span>
+                  <span className="text-subtle">único</span>
                 </div>
-                <p className="mt-2 text-sm text-yellow-400/80">
+                <p className="mt-2 text-sm text-premium/80">
                   Pague uma vez, use para sempre. Inclui atualizações futuras.
                 </p>
               </div>
@@ -240,9 +240,9 @@ function UpgradeContent() {
                 ].map((feature, i) => (
                   <li
                     key={i}
-                    className="flex items-center gap-3 text-sm text-neutral-300"
+                    className="flex items-center gap-3 text-sm text-foreground/80"
                   >
-                    <div className="p-1 rounded-full bg-yellow-500/10 text-yellow-500">
+                    <div className="p-1 rounded-full bg-premium/10 text-premium">
                       <Check size={12} />
                     </div>
                     {feature}
@@ -255,8 +255,8 @@ function UpgradeContent() {
                 disabled={isPremium}
                 className={`w-full py-4 rounded-xl font-bold transition-all shadow-lg ${
                   isPremium
-                    ? "bg-neutral-800 text-neutral-400 cursor-not-allowed"
-                    : "bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 shadow-orange-500/20"
+                    ? "bg-secondary text-muted-foreground cursor-not-allowed"
+                    : "bg-premium text-background hover:bg-premium/90 shadow-premium/25"
                 }`}
               >
                 {isPremium
@@ -282,9 +282,9 @@ function UpgradeContent() {
 
         <BlurFade duration={0.8} delay={0.6}>
           <div className="mt-16 text-center">
-            <p className="text-neutral-500 text-sm">
+            <p className="text-subtle text-sm">
               Dúvidas? Entre em contato ou acesse o{" "}
-              <Link href="/blog" className="underline hover:text-white">
+              <Link href="/blog" className="underline hover:text-foreground">
                 Blog
               </Link>{" "}
               para saber mais.
@@ -298,7 +298,7 @@ function UpgradeContent() {
 
 export default function UpgradePage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-neutral-950" />}>
+    <Suspense fallback={<div className="min-h-screen bg-background" />}>
       <UpgradeContent />
     </Suspense>
   );

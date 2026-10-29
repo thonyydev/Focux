@@ -89,7 +89,7 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   return (
-    <div className="min-h-screen w-full bg-neutral-950 text-neutral-200 pb-24 selection:bg-neutral-700 selection:text-white">
+    <div className="min-h-screen w-full bg-background text-foreground/90 pb-24 selection:bg-accent selection:text-foreground">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -108,9 +108,9 @@ export default async function BlogPostPage({ params }: Props) {
         <div className="mb-12">
           <Link
             href="/blog"
-            className="group inline-flex items-center text-sm font-medium text-neutral-500 hover:text-white mb-8 transition-colors"
+            className="group inline-flex items-center text-sm font-medium text-subtle hover:text-foreground mb-8 transition-colors"
           >
-            <div className="mr-2 rounded-full border border-neutral-800 p-1 transition-colors group-hover:border-neutral-600 group-hover:bg-neutral-800">
+            <div className="mr-2 rounded-full border border-border p-1 transition-colors group-hover:border-muted-foreground/40 group-hover:bg-secondary">
               <svg
                 className="w-3 h-3"
                 fill="none"
@@ -129,15 +129,15 @@ export default async function BlogPostPage({ params }: Props) {
           </Link>
 
           <div className="space-y-4">
-            <div className="flex items-center gap-3 text-sm font-medium text-neutral-500">
+            <div className="flex items-center gap-3 text-sm font-medium text-subtle">
               <time dateTime={post.date} className="uppercase tracking-wider">
                 {formatDateClean(post.date)}
               </time>
-              <span className="h-0.5 w-0.5 rounded-full bg-neutral-500" />
+              <span className="h-0.5 w-0.5 rounded-full bg-subtle" />
               <span>Blog do Focux</span>
             </div>
 
-            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight">
+            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground leading-tight">
               {post.title}
             </h1>
           </div>
@@ -146,14 +146,14 @@ export default async function BlogPostPage({ params }: Props) {
         <div
           className={`
           prose prose-lg dark:prose-invert max-w-none
-          prose-headings:text-neutral-100 prose-headings:font-bold prose-headings:tracking-tight
-          prose-p:text-neutral-400 prose-p:leading-relaxed
-          prose-strong:text-white prose-strong:font-semibold
-          prose-a:text-white prose-a:underline prose-a:decoration-neutral-700 prose-a:underline-offset-4 hover:prose-a:decoration-white hover:prose-a:text-white
-          prose-li:text-neutral-400
-          prose-blockquote:border-l-neutral-700 prose-blockquote:bg-neutral-900/50 prose-blockquote:px-6 prose-blockquote:py-2 prose-blockquote:rounded-r-lg prose-blockquote:text-neutral-300 prose-blockquote:not-italic
-          prose-img:rounded-2xl prose-img:border prose-img:border-neutral-800
-          prose-hr:border-neutral-800 prose prose-lg dark:prose-invert max-w-none
+          prose-headings:text-foreground prose-headings:font-bold prose-headings:tracking-tight
+          prose-p:text-muted-foreground prose-p:leading-relaxed
+          prose-strong:text-foreground prose-strong:font-semibold
+          prose-a:text-foreground prose-a:underline prose-a:decoration-neutral-700 prose-a:underline-offset-4 hover:prose-a:decoration-white hover:prose-a:text-foreground
+          prose-li:text-muted-foreground
+          prose-blockquote:border-l-neutral-700 prose-blockquote:bg-card/50 prose-blockquote:px-6 prose-blockquote:py-2 prose-blockquote:rounded-r-lg prose-blockquote:text-foreground/80 prose-blockquote:not-italic
+          prose-img:rounded-2xl prose-img:border prose-img:border-border
+          prose-hr:border-border prose prose-lg dark:prose-invert max-w-none
         `}
         >
           <MDXRemote source={post.content} />

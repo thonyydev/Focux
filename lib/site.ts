@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 export const SITE_URL = "https://focux.app";
 export const SITE_NAME = "Focux";
+export const APP_VERSION = "3.0";
 export const SITE_DESCRIPTION =
   "Timer Pomodoro online, gratuito e sem anúncios, com sessões de foco e pausas personalizáveis para manter a produtividade todos os dias.";
 

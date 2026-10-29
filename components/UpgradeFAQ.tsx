@@ -14,14 +14,14 @@ interface FAQItemProps {
 
 function FAQItem({ question, answer, isOpen, onClick }: FAQItemProps) {
   return (
-    <div className="border border-neutral-800 rounded-xl overflow-hidden bg-neutral-900/50">
+    <div className="border border-border rounded-xl overflow-hidden bg-card/50">
       <button
         onClick={onClick}
-        className="w-full flex items-center justify-between p-4 text-left hover:bg-neutral-800/50 transition-colors"
+        className="w-full flex items-center justify-between p-4 text-left hover:bg-secondary/50 transition-colors"
       >
-        <span className="font-medium text-neutral-200">{question}</span>
+        <span className="font-medium text-foreground/90">{question}</span>
         <ChevronDown
-          className={`w-5 h-5 text-neutral-400 transition-transform duration-300 ${
+          className={`w-5 h-5 text-muted-foreground transition-transform duration-300 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
@@ -34,7 +34,7 @@ function FAQItem({ question, answer, isOpen, onClick }: FAQItemProps) {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <div className="p-4 pt-0 text-sm text-neutral-400 leading-relaxed">
+            <div className="p-4 pt-0 text-sm text-muted-foreground leading-relaxed">
               {answer}
             </div>
           </motion.div>
@@ -53,7 +53,7 @@ export function UpgradeFAQ() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-4">
-      <h2 className="text-2xl font-bold text-center text-white mb-8">
+      <h2 className="text-2xl font-bold text-center text-foreground mb-8">
         Perguntas Frequentes
       </h2>
       <div className="flex flex-col gap-3">
