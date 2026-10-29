@@ -200,7 +200,9 @@ export default function AccountPage() {
                           try {
                             const res = await fetch("/api/portal", {
                               method: "POST",
-                              body: JSON.stringify({ userId: user.uid }),
+                              headers: {
+                                Authorization: `Bearer ${await user.getIdToken()}`,
+                              },
                             });
                             const data = await res.json();
                             if (data.url) window.location.href = data.url;

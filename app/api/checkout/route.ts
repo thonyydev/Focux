@@ -1,15 +1,18 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-01-28.clover", // Using latest API version
-});
+import { getStripe } from "@/lib/stripe";
+import { getAuthedUser } from "@/lib/api-auth";
 
 export async function POST(req: Request) {
   try {
-    const { plan, userId, userEmail } = await req.json();
+    const user = await getAuthedUser(req);
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    if (!userId || !plan) {
+    const { plan } = await req.json();
+
+    if (!plan) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 },
@@ -36,7 +39,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const session = await stripe.checkout.sessions.create({
+    const session = await getStripe().checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
         {
@@ -47,11 +50,16 @@ export async function POST(req: Request) {
       mode: mode,
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/upgrade?success=true`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/upgrade?canceled=true`,
-      customer_email: userEmail, // Pre-fills email
+      customer_email: user.email, // Pre-fills email
       metadata: {
-        userId: userId,
+        userId: user.uid,
         plan: plan,
       },
+      // Os eventos de assinatura (cancelamento/renovação) só carregam os metadados
+      // da assinatura, não os da sessão; o webhook usa isso para achar o usuário.
+      ...(mode === "subscription" && {
+        subscription_data: { metadata: { userId: user.uid } },
+      }),
     });
 
     return NextResponse.json({ url: session.url });

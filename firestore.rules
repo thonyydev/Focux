@@ -1,0 +1,43 @@
+rules_version = '2';
+
+// Cole este conteúdo em Firebase Console > Firestore Database > Regras.
+// O servidor (Admin SDK, usado nas rotas de API e no webhook do Stripe) ignora
+// estas regras. Elas valem só para o navegador.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Campos que só o servidor (webhook do Stripe) pode alterar.
+    function premiumFieldsUnchanged() {
+      let now = request.resource.data;
+      let before = resource.data;
+      return now.get('isPremium', false) == before.get('isPremium', false)
+        && now.get('plan', null) == before.get('plan', null)
+        && now.get('badges', []) == before.get('badges', [])
+        && now.get('stripeCustomerId', null) == before.get('stripeCustomerId', null)
+        && now.get('subscriptionId', null) == before.get('subscriptionId', null);
+    }
+
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      // Ao criar o documento, o usuário não pode se declarar Premium.
+      allow create: if request.auth != null && request.auth.uid == userId
+        && request.resource.data.get('isPremium', false) == false
+        && !request.resource.data.keys().hasAny(
+          ['plan', 'badges', 'stripeCustomerId', 'subscriptionId']);
+
+      allow update: if request.auth != null && request.auth.uid == userId
+        && premiumFieldsUnchanged();
+
+      allow delete: if false;
+
+      match /sessions/{sessionId} {
+        allow read: if request.auth != null && request.auth.uid == userId;
+        allow create: if request.auth != null && request.auth.uid == userId
+          && request.resource.data.mode in ['focus', 'break', 'longBreak']
+          && request.resource.data.duration is number;
+        allow update, delete: if false;
+      }
+    }
+  }
+}
