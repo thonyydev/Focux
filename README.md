@@ -23,6 +23,15 @@ A minimalist and elegant Pomodoro timer to maximize your productivity.
 - Progress saved in the browser, so you can resume after reloading or closing the tab
 - Sound alerts and browser notifications when a session ends (each can be toggled)
 - Confetti celebration when you complete focus sessions
+- Ambient sound while you focus (white noise, brown noise or rain, generated in the browser)
+- Keyboard shortcuts: `Space` start/pause, `R` reset, `1` / `2` / `3` switch mode
+- The remaining time shows in the browser tab title
+
+### ✅ Tasks, daily goal and streak (logged-in users)
+
+- Add tasks, mark them done, and pick the one you are focusing on: each completed focus session is linked to it, and the task shows how many sessions it took (🍅)
+- Daily focus goal in minutes (default 120, adjustable in **My Account**) with a progress bar on the home screen
+- Streak: consecutive days with at least one focus session (today still counts as open until the day ends)
 
 ### 👤 Accounts
 
@@ -42,7 +51,7 @@ A minimalist and elegant Pomodoro timer to maximize your productivity.
 | Lifetime | R$ 34,90 one-time | Everything in Monthly, early supporter badge, early access to new features, priority support. |
 
 - Payments are handled by [Stripe](https://stripe.com/) Checkout; subscribers manage or cancel through the Stripe billing portal
-- Premium is granted by a Stripe webhook after a successful checkout
+- Premium is granted by a Stripe webhook after a successful checkout, and revoked when a monthly subscription is canceled or stops being paid
 
 ### 📊 Analytics (Premium)
 
@@ -105,10 +114,13 @@ The app runs at [http://localhost:3000](http://localhost:3000). Create a `.env.l
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key |
 | `STRIPE_PRICE_MONTHLY`, `STRIPE_PRICE_LIFETIME` | Stripe price IDs for each plan |
 | `STRIPE_WEBHOOK_SECRET` | Signing secret of the webhook endpoint |
+| `FIREBASE_SERVICE_ACCOUNT` | Firebase service account JSON (one line, server only). Used by the API routes to verify logins and by the Stripe webhook to write Premium status |
 | `NEXT_PUBLIC_BASE_URL` | Site URL, used for Stripe redirects (`http://localhost:3000` locally) |
 | `NEXT_PUBLIC_GOOGLE_ANALYTICS_ID` | Google Analytics measurement ID |
 
-To test Premium locally, forward Stripe events to the webhook endpoint (`/api/webhooks/stripe`, event `checkout.session.completed`) using the [Stripe CLI](https://docs.stripe.com/stripe-cli) and use the signing secret it prints as `STRIPE_WEBHOOK_SECRET`.
+To test Premium locally, forward Stripe events to the webhook endpoint (`/api/webhooks/stripe`; events `checkout.session.completed`, `customer.subscription.updated` and `customer.subscription.deleted`) using the [Stripe CLI](https://docs.stripe.com/stripe-cli) and use the signing secret it prints as `STRIPE_WEBHOOK_SECRET`.
+
+Firestore security rules live in `firestore.rules`; paste them into the Firebase Console (Firestore Database → Rules) when they change.
 
 Other scripts: `npm run build`, `npm run start` and `npm run lint`.
 

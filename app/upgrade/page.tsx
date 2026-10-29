@@ -43,12 +43,9 @@ function UpgradeContent() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${await user.getIdToken()}`,
         },
-        body: JSON.stringify({
-          plan: planKey,
-          userId: user.uid,
-          userEmail: user.email,
-        }),
+        body: JSON.stringify({ plan: planKey }),
       });
 
       const data = await response.json();
