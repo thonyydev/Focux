@@ -1,5 +1,6 @@
 import Timer from "@/components/Timer";
 import { Header } from "@/components/Header";
+import { DailyProgress } from "@/components/DailyProgress";
 import { LightRays } from "@/components/ui/light-rays";
 import { JsonLd } from "@/components/JsonLd";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
@@ -26,6 +27,7 @@ export default function Home() {
         }}
       />
       <Header />
+      <DailyProgress />
       <Timer />
       <LightRays />
     </main>

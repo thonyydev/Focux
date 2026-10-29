@@ -7,6 +7,7 @@ import { logout } from "@/lib/auth";
 import { BlurFade } from "./ui/blur-fade";
 import { saveSession } from "@/lib/db";
 import { useAuth } from "@/contexts/AuthContext";
+import TaskList from "@/components/TaskList";
 
 type Mode = "focus" | "break" | "longBreak";
 
@@ -43,6 +44,8 @@ export default function Timer() {
   const modeRef = useRef<Mode>(mode);
   const focusCountRef = useRef<number>(focusCount);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
+  const activeTaskRef = useRef(activeTaskId);
   const hasTriggeredRef = useRef(false);
 
   // Atualizar refs
@@ -53,6 +56,10 @@ export default function Timer() {
   useEffect(() => {
     focusCountRef.current = focusCount;
   }, [focusCount]);
+
+  useEffect(() => {
+    activeTaskRef.current = activeTaskId;
+  }, [activeTaskId]);
 
   const handleLogout = async () => {
     await logout();
@@ -215,6 +222,8 @@ export default function Timer() {
         saveSession(user.uid, {
           mode: "focus",
           duration: timerSettings.focus,
+          // o Firestore rejeita campos undefined, então só entra se houver tarefa
+          ...(activeTaskRef.current && { taskId: activeTaskRef.current }),
         });
       }
 
@@ -654,6 +663,8 @@ export default function Timer() {
           <BorderBeam duration={10} size={200} />
         </div>
       </BlurFade>
+
+      <TaskList activeTaskId={activeTaskId} onSelect={setActiveTaskId} />
     </>
   );
 }

@@ -24,6 +24,12 @@ A minimalist and elegant Pomodoro timer to maximize your productivity.
 - Sound alerts and browser notifications when a session ends (each can be toggled)
 - Confetti celebration when you complete focus sessions
 
+### ✅ Tasks, daily goal and streak (logged-in users)
+
+- Add tasks, mark them done, and pick the one you are focusing on: each completed focus session is linked to it, and the task shows how many sessions it took (🍅)
+- Daily focus goal in minutes (default 120, adjustable in **My Account**) with a progress bar on the home screen
+- Streak: consecutive days with at least one focus session (today still counts as open until the day ends)
+
 ### 👤 Accounts
 
 - Sign up and log in with email and password, or with Google

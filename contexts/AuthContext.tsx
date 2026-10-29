@@ -22,6 +22,7 @@ export type UserPreferences = {
   notificationsEnabled: boolean;
   volume: number;
   ambientSound?: string;
+  dailyGoalMinutes: number;
 };
 
 const GUEST_SETTINGS_KEY = "focux-guest-settings";
@@ -36,6 +37,7 @@ const DEFAULT_PREFERENCES: UserPreferences = {
   soundEnabled: true,
   notificationsEnabled: false,
   volume: 50,
+  dailyGoalMinutes: 120,
 };
 
 type AuthContextType = {
@@ -129,7 +131,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setBadges(data.badges || []);
         setDisplayName(data.displayName || null);
         if (data.preferences) {
-          setPreferences(data.preferences);
+          // Mescla com o padrão: usuários antigos não têm campos novos (ex.: dailyGoalMinutes)
+          setPreferences({ ...DEFAULT_PREFERENCES, ...data.preferences });
         } else {
           setPreferences(DEFAULT_PREFERENCES);
         }

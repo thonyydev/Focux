@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { ProfileHeader } from "@/components/account/ProfileHeader";
 import { AccountStats } from "@/components/account/AccountStats";
+import { DailyGoalSetting } from "@/components/account/DailyGoalSetting";
 import { BorderBeam } from "@/components/ui/border-beam";
 
 export default function AccountPage() {
@@ -120,6 +121,7 @@ export default function AccountPage() {
                       ></div>
                     </div>
                   </div>
+                  <DailyGoalSetting />
                 </div>
               </div>
             </BlurFade>

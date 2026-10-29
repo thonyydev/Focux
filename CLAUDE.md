@@ -12,12 +12,11 @@ npm run lint    # eslint (flat config, eslint.config.mjs)
 npx tsc --noEmit  # checagem de tipos; não existe script de typecheck
 ```
 
-Não há suíte de testes. `tsc_output.txt` é um dump de checagem de tipos desatualizado e commitado (UTF-16); ignore-o.
+Não há runner de testes. A lógica de dias seguidos (`lib/stats.ts`) tem um autoteste: `node lib/stats.test.mjs` (Node 22.6+ lê o `.ts` direto). `tsc_output.txt` é um dump de checagem de tipos desatualizado e commitado (UTF-16); ignore-o.
 
 ## Stack
 
-Next.js 16 (App Router) + React 19 + TypeScript + Tailwind v4, Firebase (Auth + Firestore, SDK de cliente), Stripe, blog em MDX. O alias de caminho `@/*` aponta para a raiz do repositório (sem `src/`). A interface é em português (`<html lang="pt-br">`); comentários no código e algumas mensagens de log também estão em português. O `README.md` descreve uma versão antiga do app, gratuita e só com localStorage, e está desatualizado.
-
+Next.js 16 (App Router) + React 19 + TypeScript + Tailwind v4, Firebase (Auth + Firestore, SDK de cliente), Stripe, blog em MDX. O alias de caminho `@/*` aponta para a raiz do repositório (sem `src/`). A interface é em português (`<html lang="pt-br">`); comentários no código e algumas mensagens de log também estão em português.
 Variáveis de ambiente necessárias (`.env.local`): `NEXT_PUBLIC_FIREBASE_*` (API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID), `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_MONTHLY`, `STRIPE_PRICE_LIFETIME`, `NEXT_PUBLIC_BASE_URL`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_GOOGLE_ANALYTICS_ID`, `FIREBASE_SERVICE_ACCOUNT` (JSON da conta de serviço, só servidor).
 
 ## Arquitetura
@@ -30,7 +29,7 @@ Variáveis de ambiente necessárias (`.env.local`): `NEXT_PUBLIC_FIREBASE_*` (AP
 - expõe funções `update*` que fazem `setDoc(..., { merge: true })` com estado local otimista.
 - **Modo convidado:** sem usuário, `timerSettings` fica no `localStorage` (`focux-guest-settings`) e `updatePreferences`/`updateDisplayName` não fazem nada. Proteja páginas restritas com `components/AuthGuard.tsx`.
 
-**Estrutura do Firestore:** `users/{uid}` (email, isPremium, plan, badges, displayName, preferences, timerSettings, stripeCustomerId, subscriptionId, createdAt) e a subcoleção `users/{uid}/sessions` (gravada por `saveSession` em `lib/db.ts`; `getUserSessions` retorna as 100 mais recentes ordenadas por `completedAt` e alimenta `/analytics` e `/account`). `lib/auth.ts` reúne os helpers de login/registro/Google/logout; `register` cria o documento base `users/{uid}`. `saveSession` engole erros silenciosamente.
+**Estrutura do Firestore:** `users/{uid}` (email, isPremium, plan, badges, displayName, preferences, timerSettings, stripeCustomerId, subscriptionId, createdAt) `users/{uid}/tasks` (title, done, createdAt; ouvida em tempo real por `subscribeTasks`) e a subcoleção `users/{uid}/sessions` (gravada por `saveSession` em `lib/db.ts`, com `taskId` opcional quando há tarefa em foco — nunca gravar campos `undefined`: o Firestore rejeita e `saveSession` engole o erro; `useSessions` em `lib/useSessions.ts` é a versão em tempo real, usada pelo progresso diário e pela lista de tarefas; `getUserSessions` retorna as 100 mais recentes ordenadas por `completedAt` e alimenta `/analytics` e `/account`). `lib/auth.ts` reúne os helpers de login/registro/Google/logout; `register` cria o documento base `users/{uid}`. `saveSession` engole erros silenciosamente. `preferences` inclui `dailyGoalMinutes` e é mesclada com `DEFAULT_PREFERENCES` em `AuthContext`, para usuários antigos receberem campos novos.
 
 **Fluxo Premium / Stripe:**
 1. `/upgrade` chama `POST /api/checkout` com `{ plan }` e o token de login; a rota escolhe o preço a partir de `STRIPE_PRICE_MONTHLY`/`STRIPE_PRICE_LIFETIME` (modo `subscription` vs `payment`) e coloca `userId` + `plan` nos metadados da sessão (e `userId` também nos da assinatura).

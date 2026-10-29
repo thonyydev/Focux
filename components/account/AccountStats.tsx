@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { getUserSessions, SessionData } from "@/lib/db";
+import { currentStreak } from "@/lib/stats";
 import { Flame, Clock, Target } from "lucide-react";
 
 export function AccountStats() {
@@ -25,15 +26,10 @@ export function AccountStats() {
         0,
       );
 
-      // Simple Streak Calculation (days in a row)
-      // This is a simplified version, ideally backend handles this
-      const dates = sessions.map((s) => s.completedAt?.toDate().toDateString());
-      const uniqueDates = Array.from(new Set(dates)).filter(Boolean);
-
       setStats({
         totalMinutes: Math.floor(totalMinutes),
         totalSessions: sessions.length,
-        streak: uniqueDates.length,
+        streak: currentStreak(sessions),
       });
       setLoading(false);
     }
