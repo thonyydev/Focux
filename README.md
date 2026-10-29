@@ -1,4 +1,4 @@
-# [Focux](https://www.focux.app/)
+# [Focux](https://focux.app/)
 
 A minimalist and elegant Pomodoro timer to maximize your productivity.
 
