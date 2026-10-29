@@ -1,6 +1,4 @@
-import Timer from "@/components/Timer";
-import { Header } from "@/components/Header";
-import { DailyProgress } from "@/components/DailyProgress";
+import Dashboard from "@/components/Dashboard";
 import { LightRays } from "@/components/ui/light-rays";
 import { JsonLd } from "@/components/JsonLd";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
@@ -12,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center pb-28 bg-background text-foreground">
+    <main className="min-h-screen flex items-center pb-28 bg-background text-foreground">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -26,10 +24,8 @@ export default function Home() {
           offers: { "@type": "Offer", price: "0", priceCurrency: "BRL" },
         }}
       />
-      <Header />
-      <DailyProgress />
-      <Timer />
-      <LightRays />
+      <Dashboard />
+      <LightRays className="opacity-50" />
     </main>
   );
 }

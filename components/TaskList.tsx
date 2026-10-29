@@ -66,7 +66,7 @@ export default function TaskList({ activeTaskId, onSelect }: Props) {
   return (
     <section
       aria-label="Tarefas"
-      className="w-full max-w-sm sm:max-w-md md:max-w-lg mt-4 rounded-2xl bg-card/60 border border-border p-4"
+      className="w-full rounded-2xl bg-card/60 border border-border p-4"
     >
       <form onSubmit={add} className="flex gap-2">
         <input

@@ -7,7 +7,16 @@ import { logout } from "@/lib/auth";
 import { BlurFade } from "./ui/blur-fade";
 import { saveSession } from "@/lib/db";
 import { useAuth } from "@/contexts/AuthContext";
-import TaskList from "@/components/TaskList";
+import {
+  Coffee,
+  Headphones,
+  Moon,
+  Pause,
+  Play,
+  RotateCcw,
+  Settings,
+  Target,
+} from "lucide-react";
 import {
   AMBIENT_LABELS,
   Ambient,
@@ -31,7 +40,11 @@ const modeText = {
 
 const STORAGE_KEY = "focux-timer";
 
-export default function Timer() {
+export default function Timer({
+  activeTaskId,
+}: {
+  activeTaskId: string | null;
+}) {
   const { timerSettings, updateTimerSettings, user, preferences, updatePreferences } =
     useAuth();
   const [mode, setMode] = useState<Mode>("focus");
@@ -51,7 +64,6 @@ export default function Timer() {
   const modeRef = useRef<Mode>(mode);
   const focusCountRef = useRef<number>(focusCount);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
   const activeTaskRef = useRef(activeTaskId);
   const hasTriggeredRef = useRef(false);
 
@@ -567,8 +579,8 @@ export default function Timer() {
         </div>
       )}
 
-      <BlurFade duration={1} delay={0.5}>
-        <div className="relative flex flex-col items-center gap-4 sm:gap-6 md:gap-8 p-4 sm:p-6 md:p-10 rounded-3xl bg-gradient-to-br from-card/80 to-background/80 backdrop-blur-xl border border-input/50 shadow-2xl w-full max-w-sm sm:max-w-md md:max-w-lg overflow-hidden">
+      <BlurFade duration={1} delay={0.5} className="w-full">
+        <div className="relative flex flex-col items-center gap-4 sm:gap-6 p-4 sm:p-6 md:p-8 rounded-3xl bg-card/80 backdrop-blur-xl border border-border shadow-2xl w-full overflow-hidden">
           {/* Glow de fundo (não intercepta cliques) */}
           <div
             className={`absolute inset-0 pointer-events-none opacity-10 blur-3xl ${
@@ -587,33 +599,36 @@ export default function Timer() {
           <div className="relative flex gap-1.5 sm:gap-2 p-1 sm:p-1.5 bg-background/70 rounded-2xl border border-border/50 shadow-inner w-full">
             <button
               onClick={() => handleModeChange("focus")}
-              className={`flex-1 px-3 sm:px-5 py-2 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${
+              className={`flex-1 flex items-center justify-center gap-2 px-2 sm:px-3 py-2 sm:py-2.5 rounded-xl whitespace-nowrap text-xs sm:text-sm font-semibold transition-all duration-300 ${
                 mode === "focus"
-                  ? "bg-focus text-background shadow-lg shadow-focus/30 scale-105"
+                  ? "bg-focus text-background shadow-lg shadow-focus/30"
                   : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
               }`}
             >
-              <span className="hidden sm:inline">🎯 </span>Foco
+              <Target size={16} className="hidden sm:block" aria-hidden="true" />
+              Foco
             </button>
             <button
               onClick={() => handleModeChange("break")}
-              className={`flex-1 px-3 sm:px-5 py-2 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${
+              className={`flex-1 flex items-center justify-center gap-2 px-2 sm:px-3 py-2 sm:py-2.5 rounded-xl whitespace-nowrap text-xs sm:text-sm font-semibold transition-all duration-300 ${
                 mode === "break"
-                  ? "bg-break text-background shadow-lg shadow-break/30 scale-105"
+                  ? "bg-break text-background shadow-lg shadow-break/30"
                   : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
               }`}
             >
-              <span className="hidden sm:inline">☕ </span>Pausa
+              <Coffee size={16} className="hidden sm:block" aria-hidden="true" />
+              Pausa
             </button>
             <button
               onClick={() => handleModeChange("longBreak")}
-              className={`flex-1 px-3 sm:px-5 py-2 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${
+              className={`flex-1 flex items-center justify-center gap-2 px-2 sm:px-3 py-2 sm:py-2.5 rounded-xl whitespace-nowrap text-xs sm:text-sm font-semibold transition-all duration-300 ${
                 mode === "longBreak"
-                  ? "bg-long-break text-background shadow-lg shadow-long-break/30 scale-105"
+                  ? "bg-long-break text-background shadow-lg shadow-long-break/30"
                   : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
               }`}
             >
-              <span className="hidden sm:inline">🌙 </span>Pausa Longa
+              <Moon size={16} className="hidden sm:block" aria-hidden="true" />
+              Pausa Longa
             </button>
           </div>
 
@@ -646,21 +661,26 @@ export default function Timer() {
           </div>
 
           {/* Indicador de Progresso */}
-          <div className="flex gap-2 sm:gap-3">
-            {[0, 1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className={`relative w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-500 ${
-                  i < focusCount
-                    ? "bg-focus shadow-lg shadow-focus/60 scale-110"
-                    : "bg-secondary border border-input"
-                }`}
-              >
-                {i < focusCount && (
-                  <div className="absolute inset-0 rounded-full bg-primary animate-ping opacity-75" />
-                )}
-              </div>
-            ))}
+          <div
+            className="flex items-center gap-3"
+            role="img"
+            aria-label={`${focusCount} de 4 sessões até a pausa longa`}
+          >
+            <div className="flex gap-2">
+              {[0, 1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className={`w-3 h-3 rounded-full transition-all duration-500 ${
+                    i < focusCount
+                      ? "bg-primary shadow-lg shadow-primary/50"
+                      : "bg-secondary border border-input"
+                  }`}
+                />
+              ))}
+            </div>
+            <span className="text-xs text-muted-foreground">
+              {focusCount} de 4 até a pausa longa
+            </span>
           </div>
 
           {/* Controles */}
@@ -669,35 +689,45 @@ export default function Timer() {
               onClick={() => setRunning((r) => !r)}
               aria-keyshortcuts="Space"
               disabled={seconds === 0}
-              className={`w-full sm:flex-1 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-sm sm:text-base transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-xl ${
+              className={`w-full sm:flex-1 flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-sm sm:text-base transition-all duration-300 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100 shadow-xl ${
                 running
                   ? "bg-destructive text-foreground hover:bg-destructive/90 shadow-destructive/30"
                   : "bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary/30"
               }`}
             >
-              {running ? "⏸ Pausar" : "▶ Iniciar"}
+              {running ? (
+                <>
+                  <Pause size={18} aria-hidden="true" /> Pausar
+                </>
+              ) : (
+                <>
+                  <Play size={18} aria-hidden="true" /> Iniciar
+                </>
+              )}
             </button>
 
             <div className="flex gap-2 sm:gap-3">
               <button
                 onClick={reset}
                 aria-keyshortcuts="R"
-                className="flex-1 sm:flex-none px-5 sm:px-6 py-3 sm:py-4 rounded-xl bg-gradient-to-br from-secondary to-card text-foreground hover:from-accent hover:to-secondary transition-all duration-300 transform hover:scale-105 active:scale-95 font-bold border border-input/50 shadow-lg text-xl"
+                aria-label="Reiniciar"
+                className="flex-1 sm:flex-none flex items-center justify-center px-5 sm:px-6 py-3 sm:py-4 rounded-xl bg-secondary text-foreground hover:bg-accent transition-all duration-300 active:scale-95 border border-border"
               >
-                ↻
+                <RotateCcw size={20} aria-hidden="true" />
               </button>
               <button
                 onClick={handleOpenSettings}
-                className="flex-1 sm:flex-none px-5 sm:px-6 py-3 sm:py-4 rounded-xl bg-gradient-to-br from-secondary to-card text-foreground hover:from-accent hover:to-secondary transition-all duration-300 transform hover:scale-105 active:scale-95 font-bold border border-input/50 shadow-lg text-xl"
+                aria-label="Configurações"
+                className="flex-1 sm:flex-none flex items-center justify-center px-5 sm:px-6 py-3 sm:py-4 rounded-xl bg-secondary text-foreground hover:bg-accent transition-all duration-300 active:scale-95 border border-border"
               >
-                ⚙️
+                <Settings size={20} aria-hidden="true" />
               </button>
             </div>
           </div>
 
           {/* Som ambiente */}
           <label className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-            <span aria-hidden="true">🎧</span>
+            <Headphones size={14} aria-hidden="true" />
             <select
               aria-label="Som ambiente (toca durante o foco)"
               value={ambient}
@@ -706,7 +736,7 @@ export default function Timer() {
                 setAmbientChoice(value);
                 updatePreferences({ ambientSound: value });
               }}
-              className="rounded-lg bg-card border border-input px-2 py-1 text-foreground/90 focus:outline-none focus:border-muted-foreground/50"
+              className="rounded-lg bg-transparent border border-border px-2 py-1 text-muted-foreground hover:text-foreground focus:outline-none focus:border-muted-foreground/50"
             >
               {Object.entries(AMBIENT_LABELS).map(([value, label]) => (
                 <option key={value} value={value}>
@@ -716,24 +746,9 @@ export default function Timer() {
             </select>
           </label>
 
-          {/* Estatísticas */}
-          <div className="relative flex flex-col items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-xl bg-card/50 border border-border/50">
-            <div className="text-xs sm:text-sm font-medium text-muted-foreground text-center">
-              <span className="text-foreground font-bold">{focusCount}</span> de{" "}
-              <span className="text-foreground font-bold">4</span> sessões até a
-              pausa longa
-            </div>
-          </div>
-
-          <p className="hidden sm:block text-xs text-subtle text-center">
-            Atalhos: Espaço inicia/pausa · R reinicia · 1, 2, 3 trocam o modo
-          </p>
-
           <BorderBeam duration={10} size={200} />
         </div>
       </BlurFade>
-
-      <TaskList activeTaskId={activeTaskId} onSelect={setActiveTaskId} />
     </>
   );
 }
