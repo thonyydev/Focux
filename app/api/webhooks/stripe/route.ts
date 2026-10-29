@@ -41,26 +41,11 @@ async function grantPremium(session: Stripe.Checkout.Session) {
 }
 
 async function revokePremium(subscription: Stripe.Subscription) {
-  const db = adminDb();
-  const customerId =
-    typeof subscription.customer === "string"
-      ? subscription.customer
-      : subscription.customer.id;
-
-  // Assinaturas novas trazem o userId nos metadados; as antigas só têm o customer.
+  // O checkout grava o userId nos metadados da assinatura.
   const userId = subscription.metadata?.userId;
-  let userRef = userId ? db.doc(`users/${userId}`) : null;
+  if (!userId) return;
 
-  if (!userRef) {
-    const found = await db
-      .collection("users")
-      .where("stripeCustomerId", "==", customerId)
-      .limit(1)
-      .get();
-    userRef = found.docs[0]?.ref ?? null;
-  }
-  if (!userRef) return;
-
+  const userRef = adminDb().doc(`users/${userId}`);
   const data = (await userRef.get()).data();
 
   // Só revoga se esta for a assinatura atual do usuário. Quem trocou para o
@@ -73,7 +58,7 @@ async function revokePremium(subscription: Stripe.Subscription) {
     { isPremium: false, plan: null, subscriptionId: FieldValue.delete() },
     { merge: true },
   );
-  console.log(`User ${userRef.id} premium revoked (${subscription.status})`);
+  console.log(`User ${userId} premium revoked (${subscription.status})`);
 }
 
 export async function POST(req: Request) {
