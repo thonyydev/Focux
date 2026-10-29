@@ -28,13 +28,13 @@ export default function BlogPage() {
   const posts = getBlogPosts();
 
   return (
-    <div className="min-h-screen w-full bg-neutral-950 text-neutral-200 selection:bg-neutral-700 selection:text-white pb-24">
+    <div className="min-h-screen w-full bg-background text-foreground/90 selection:bg-accent selection:text-foreground pb-24">
       <div className="container mx-auto py-24 px-4 max-w-5xl">
         <div className="mb-16 text-center space-y-4">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-[1.5] bg-clip-text text-transparent bg-gradient-to-b from-white to-neutral-500">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-[1.5] bg-clip-text text-transparent bg-gradient-to-b from-white to-subtle">
             Blog do Focux
           </h1>
-          <p className="text-neutral-400 text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
             Novidades, bastidores e dicas para você manter o foco no que
             realmente importa.
           </p>
@@ -45,28 +45,28 @@ export default function BlogPage() {
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group relative flex flex-col rounded-2xl bg-neutral-900/50 border border-neutral-800 p-6 
-                         transition-all duration-300 hover:bg-neutral-900 hover:border-neutral-700 hover:shadow-2xl hover:shadow-black/50"
+              className="group relative flex flex-col rounded-2xl bg-card/50 border border-border p-6 
+                         transition-all duration-300 hover:bg-card hover:border-input hover:shadow-2xl hover:shadow-black/50"
             >
-              <div className="mb-4 flex items-center gap-3 text-xs font-medium text-neutral-500">
+              <div className="mb-4 flex items-center gap-3 text-xs font-medium text-subtle">
                 <time dateTime={post.date} className="uppercase tracking-wider">
                   {formatDateClean(post.date)}
                 </time>
-                <span className="h-0.5 w-0.5 rounded-full bg-neutral-500" />
+                <span className="h-0.5 w-0.5 rounded-full bg-subtle" />
                 <span>Blog</span>
               </div>
 
-              <h2 className="text-2xl font-semibold mb-3 text-neutral-100 group-hover:text-white transition-colors">
+              <h2 className="text-2xl font-semibold mb-3 text-foreground group-hover:text-foreground transition-colors">
                 {post.title}
               </h2>
 
-              <p className="text-neutral-400 leading-relaxed mb-6 flex-grow line-clamp-3">
+              <p className="text-muted-foreground leading-relaxed mb-6 flex-grow line-clamp-3">
                 {post.description}
               </p>
 
               <BorderBeam duration={10} size={200} />
 
-              <div className="flex items-center text-sm font-medium text-white/70 group-hover:text-white transition-colors mt-auto">
+              <div className="flex items-center text-sm font-medium text-foreground/70 group-hover:text-foreground transition-colors mt-auto">
                 Ler artigo
                 <svg
                   className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1"
@@ -87,8 +87,8 @@ export default function BlogPage() {
         </div>
 
         {posts.length === 0 && (
-          <div className="text-center py-20 border border-dashed border-neutral-800 rounded-3xl bg-neutral-900/20">
-            <p className="text-neutral-500">
+          <div className="text-center py-20 border border-dashed border-border rounded-3xl bg-card/20">
+            <p className="text-subtle">
               Nenhum post encontrado por enquanto.
             </p>
           </div>

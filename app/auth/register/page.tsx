@@ -82,8 +82,8 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-neutral-950 px-4 selection:bg-neutral-800 selection:text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-neutral-900 via-neutral-950 to-neutral-950 pointer-events-none" />
+    <div className="min-h-screen w-full flex items-center justify-center bg-background px-4 selection:bg-secondary selection:text-foreground">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-card via-background to-background pointer-events-none" />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -91,12 +91,12 @@ export default function RegisterPage() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md relative z-10"
       >
-        <div className="bg-neutral-900/50 backdrop-blur-xl border border-neutral-800 rounded-3xl p-8 shadow-2xl shadow-black/50">
+        <div className="bg-card/50 backdrop-blur-xl border border-border rounded-3xl p-8 shadow-2xl shadow-black/50">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">
+            <h1 className="text-3xl font-bold text-foreground mb-2 tracking-tight">
               Crie sua conta
             </h1>
-            <p className="text-neutral-400 text-sm">
+            <p className="text-muted-foreground text-sm">
               Comece sua jornada de foco hoje
             </p>
           </div>
@@ -104,13 +104,13 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <div className="relative group">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500 group-focus-within:text-white transition-colors" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-subtle group-focus-within:text-foreground transition-colors" />
                 <input
                   type="email"
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-neutral-950/50 border border-neutral-800 rounded-xl py-3 pl-10 pr-4 text-white placeholder:text-neutral-500 outline-none focus:border-neutral-600 focus:bg-neutral-900 transition-all font-medium"
+                  className="w-full bg-background/50 border border-border rounded-xl py-3 pl-10 pr-4 text-foreground placeholder:text-subtle outline-none focus:border-muted-foreground/40 focus:bg-card transition-all font-medium"
                   required
                 />
               </div>
@@ -118,19 +118,19 @@ export default function RegisterPage() {
 
             <div className="space-y-2">
               <div className="relative group">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500 group-focus-within:text-white transition-colors" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-subtle group-focus-within:text-foreground transition-colors" />
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-neutral-950/50 border border-neutral-800 rounded-xl py-3 pl-10 pr-4 text-white placeholder:text-neutral-500 outline-none focus:border-neutral-600 focus:bg-neutral-900 transition-all font-medium"
+                  className="w-full bg-background/50 border border-border rounded-xl py-3 pl-10 pr-4 text-foreground placeholder:text-subtle outline-none focus:border-muted-foreground/40 focus:bg-card transition-all font-medium"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-subtle hover:text-foreground transition-colors"
                 >
                   {showPassword ? (
                     <EyeOff className="w-5 h-5" />
@@ -143,19 +143,19 @@ export default function RegisterPage() {
 
             <div className="space-y-2">
               <div className="relative group">
-                <CheckCircle2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500 group-focus-within:text-white transition-colors" />
+                <CheckCircle2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-subtle group-focus-within:text-foreground transition-colors" />
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Confirmar senha"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full bg-neutral-950/50 border border-neutral-800 rounded-xl py-3 pl-10 pr-4 text-white placeholder:text-neutral-500 outline-none focus:border-neutral-600 focus:bg-neutral-900 transition-all font-medium"
+                  className="w-full bg-background/50 border border-border rounded-xl py-3 pl-10 pr-4 text-foreground placeholder:text-subtle outline-none focus:border-muted-foreground/40 focus:bg-card transition-all font-medium"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-subtle hover:text-foreground transition-colors"
                 >
                   {showPassword ? (
                     <EyeOff className="w-5 h-5" />
@@ -170,7 +170,7 @@ export default function RegisterPage() {
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
-                className="text-red-400 text-sm text-center bg-red-400/10 border border-red-400/20 rounded-lg p-2"
+                className="text-destructive text-sm text-center bg-destructive/10 border border-destructive/20 rounded-lg p-2"
               >
                 {error}
               </motion.div>
@@ -179,7 +179,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-white text-black font-semibold py-3 rounded-xl hover:bg-neutral-200 transition-all transform active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+              className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-xl hover:bg-primary/90 shadow-lg shadow-primary/25 transition-all transform active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
             >
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -194,10 +194,10 @@ export default function RegisterPage() {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-neutral-800"></div>
+              <div className="w-full border-t border-border"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-neutral-900 text-neutral-500">
+              <span className="px-2 bg-card text-subtle">
                 Ou continue com
               </span>
             </div>
@@ -207,7 +207,7 @@ export default function RegisterPage() {
             type="button"
             onClick={handleGoogleLogin}
             disabled={loading}
-            className="w-full bg-neutral-800 text-white font-semibold py-3 rounded-xl hover:bg-neutral-700 transition-all transform active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-secondary text-foreground font-semibold py-3 rounded-xl hover:bg-accent transition-all transform active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
@@ -230,12 +230,12 @@ export default function RegisterPage() {
             Google
           </button>
 
-          <div className="mt-8 pt-6 border-t border-neutral-800 text-center">
-            <p className="text-neutral-400 text-sm">
+          <div className="mt-8 pt-6 border-t border-border text-center">
+            <p className="text-muted-foreground text-sm">
               Já tem uma conta?{" "}
               <Link
                 href="/auth/login"
-                className="text-white font-medium hover:underline decoration-neutral-500 underline-offset-4 transition-all"
+                className="text-foreground font-medium hover:underline decoration-neutral-500 underline-offset-4 transition-all"
               >
                 Entrar
               </Link>

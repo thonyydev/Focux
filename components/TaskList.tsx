@@ -66,7 +66,7 @@ export default function TaskList({ activeTaskId, onSelect }: Props) {
   return (
     <section
       aria-label="Tarefas"
-      className="w-full max-w-sm sm:max-w-md md:max-w-lg mt-4 rounded-2xl bg-neutral-900/60 border border-neutral-800 p-4"
+      className="w-full max-w-sm sm:max-w-md md:max-w-lg mt-4 rounded-2xl bg-card/60 border border-border p-4"
     >
       <form onSubmit={add} className="flex gap-2">
         <input
@@ -75,11 +75,11 @@ export default function TaskList({ activeTaskId, onSelect }: Props) {
           maxLength={120}
           placeholder="No que você vai focar?"
           aria-label="Nova tarefa"
-          className="flex-1 min-w-0 rounded-xl bg-neutral-950/70 border border-neutral-800 px-3 py-2 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-neutral-600"
+          className="flex-1 min-w-0 rounded-xl bg-background/70 border border-border px-3 py-2 text-sm text-foreground placeholder:text-subtle focus:outline-none focus:border-muted-foreground/40"
         />
         <button
           type="submit"
-          className="px-4 py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-sm font-semibold text-white transition"
+          className="px-4 py-2 rounded-xl bg-secondary hover:bg-accent text-sm font-semibold text-foreground transition"
         >
           Adicionar
         </button>
@@ -98,8 +98,8 @@ export default function TaskList({ activeTaskId, onSelect }: Props) {
                 key={task.id}
                 className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-sm ${
                   active
-                    ? "border-green-500/50 bg-green-500/5"
-                    : "border-neutral-800"
+                    ? "border-primary/50 bg-primary/5"
+                    : "border-border"
                 }`}
               >
                 <button
@@ -109,8 +109,8 @@ export default function TaskList({ activeTaskId, onSelect }: Props) {
                   aria-label={`Marcar "${task.title}" como ${task.done ? "pendente" : "concluída"}`}
                   className={`shrink-0 w-5 h-5 rounded-md border flex items-center justify-center transition ${
                     task.done
-                      ? "bg-green-500 border-green-500 text-white"
-                      : "border-neutral-600 hover:border-neutral-400"
+                      ? "bg-primary border-primary text-foreground"
+                      : "border-muted-foreground/40 hover:border-muted-foreground"
                   }`}
                 >
                   {task.done && <Check size={14} />}
@@ -118,7 +118,7 @@ export default function TaskList({ activeTaskId, onSelect }: Props) {
 
                 <span
                   className={`flex-1 min-w-0 truncate ${
-                    task.done ? "line-through text-neutral-500" : "text-neutral-200"
+                    task.done ? "line-through text-subtle" : "text-foreground/90"
                   }`}
                 >
                   {task.title}
@@ -126,7 +126,7 @@ export default function TaskList({ activeTaskId, onSelect }: Props) {
 
                 {pomodoros > 0 && (
                   <span
-                    className="shrink-0 text-xs text-neutral-400"
+                    className="shrink-0 text-xs text-muted-foreground"
                     title="Sessões de foco nesta tarefa"
                   >
                     🍅 {pomodoros}
@@ -141,8 +141,8 @@ export default function TaskList({ activeTaskId, onSelect }: Props) {
                     title={active ? "Parar de focar nesta" : "Focar nesta tarefa"}
                     className={`shrink-0 p-1 rounded-md transition ${
                       active
-                        ? "text-green-400"
-                        : "text-neutral-500 hover:text-white"
+                        ? "text-primary"
+                        : "text-subtle hover:text-foreground"
                     }`}
                   >
                     <Crosshair size={16} />
@@ -153,7 +153,7 @@ export default function TaskList({ activeTaskId, onSelect }: Props) {
                   onClick={() => remove(task)}
                   aria-label={`Excluir "${task.title}"`}
                   title="Excluir"
-                  className="shrink-0 p-1 rounded-md text-neutral-500 hover:text-red-400 transition"
+                  className="shrink-0 p-1 rounded-md text-subtle hover:text-destructive transition"
                 >
                   <Trash2 size={16} />
                 </button>

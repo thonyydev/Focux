@@ -18,14 +18,14 @@ export function DailyProgress() {
 
   return (
     <div className="w-full max-w-sm sm:max-w-md md:max-w-lg mb-4 px-4 sm:px-0">
-      <div className="flex items-center justify-between text-xs sm:text-sm text-neutral-400 mb-2">
+      <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground mb-2">
         <span>
           Hoje: {minutes} / {goal} min{minutes >= goal && " 🎉"}
         </span>
         <span className="flex items-center gap-1">
           <Flame
             size={14}
-            className={streak > 0 ? "text-orange-400" : "text-neutral-600"}
+            className={streak > 0 ? "text-orange-400" : "text-subtle/70"}
           />
           {streak} {streak === 1 ? "dia seguido" : "dias seguidos"}
         </span>
@@ -36,10 +36,10 @@ export function DailyProgress() {
         aria-valuemin={0}
         aria-valuemax={goal}
         aria-valuenow={Math.min(minutes, goal)}
-        className="h-1.5 rounded-full bg-neutral-800 overflow-hidden"
+        className="h-1.5 rounded-full bg-secondary overflow-hidden"
       >
         <div
-          className="h-full rounded-full bg-green-500 transition-all duration-500"
+          className="h-full rounded-full bg-primary transition-all duration-500"
           style={{ width: `${percent}%` }}
         />
       </div>

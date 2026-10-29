@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# gerado pelo `next dev` (regras do Next para agentes de IA)
+AGENTS.md

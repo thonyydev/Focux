@@ -6,6 +6,7 @@ import { getUserSessions, SessionData } from "@/lib/db";
 import { WeeklyChart } from "@/components/analytics/WeeklyChart";
 import { StatsCards } from "@/components/analytics/StatsCards";
 import { BlurFade } from "@/components/ui/blur-fade";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { LightRays } from "@/components/ui/light-rays";
@@ -33,7 +34,7 @@ export default function AnalyticsPage() {
 
   if (loading || fetching) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-neutral-950 text-neutral-400">
+      <div className="min-h-screen flex items-center justify-center bg-background text-muted-foreground">
         Carregando dados...
       </div>
     );
@@ -41,34 +42,31 @@ export default function AnalyticsPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-neutral-950 gap-4">
-        <p className="text-neutral-400">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-4">
+        <p className="text-muted-foreground">
           Faça login para ver suas estatísticas.
         </p>
-        <Link
-          href="/auth/login"
-          className="px-4 py-2 bg-white text-black rounded-lg"
-        >
-          Entrar
-        </Link>
+        <Button asChild>
+          <Link href="/auth/login">Entrar</Link>
+        </Button>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950 p-6 md:p-12">
+    <div className="min-h-screen bg-background p-6 md:p-12">
       <div className="max-w-6xl mx-auto space-y-8 relative">
         {/* Header */}
         <div className="flex items-center gap-4">
           <Link
             href="/"
-            className="p-2 hover:bg-neutral-800 rounded-full transition-colors text-neutral-400"
+            className="p-2 hover:bg-secondary rounded-full transition-colors text-muted-foreground"
           >
             <ChevronLeft size={24} />
           </Link>
           <div>
-            <h1 className="text-3xl font-bold text-white">Analytics</h1>
-            <p className="text-neutral-400">
+            <h1 className="text-3xl font-bold text-foreground">Analytics</h1>
+            <p className="text-muted-foreground">
               Acompanhe seu progresso e produtividade.
             </p>
           </div>
@@ -78,21 +76,21 @@ export default function AnalyticsPage() {
         <div className="relative">
           {/* Overlay de Bloqueio Premium */}
           {!isPremium && (
-            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-neutral-950/60 backdrop-blur-md rounded-3xl border border-white/5">
-              <div className="bg-neutral-900 border border-neutral-800 p-8 rounded-2xl shadow-2xl max-w-md text-center space-y-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-orange-500/20">
+            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background/60 backdrop-blur-md rounded-3xl border border-white/5">
+              <div className="bg-card border border-border p-8 rounded-2xl shadow-2xl max-w-md text-center space-y-4">
+                <div className="w-16 h-16 bg-premium rounded-full flex items-center justify-center mx-auto shadow-lg shadow-premium/20">
                   <span className="text-3xl">👑</span>
                 </div>
-                <h2 className="text-2xl font-bold text-white">
+                <h2 className="text-2xl font-bold text-foreground">
                   Recurso Premium
                 </h2>
-                <p className="text-neutral-400">
+                <p className="text-muted-foreground">
                   Desbloqueie estatísticas detalhadas, gráficos de desempenho e
                   veja seu histórico completo.
                 </p>
                 <Link
                   href="/upgrade"
-                  className="block w-full py-3 px-6 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-600 text-white font-bold hover:opacity-90 transition-opacity shadow-lg shadow-yellow-500/20"
+                  className="block w-full py-3 px-6 rounded-xl bg-premium text-background font-bold hover:opacity-90 transition-opacity shadow-lg shadow-premium/25"
                 >
                   Seja Premium
                 </Link>
@@ -113,8 +111,8 @@ export default function AnalyticsPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
               <BlurFade duration={0.5} delay={0.2} className="lg:col-span-2">
-                <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-6">
-                  <h2 className="text-lg font-semibold text-white mb-4">
+                <div className="bg-card/50 border border-border rounded-2xl p-6">
+                  <h2 className="text-lg font-semibold text-foreground mb-4">
                     Foco Semanal
                   </h2>
                   <WeeklyChart sessions={sessions} />
@@ -122,25 +120,25 @@ export default function AnalyticsPage() {
               </BlurFade>
 
               <BlurFade duration={0.5} delay={0.4}>
-                <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-6 h-full">
-                  <h2 className="text-lg font-semibold text-white mb-4">
+                <div className="bg-card/50 border border-border rounded-2xl p-6 h-full">
+                  <h2 className="text-lg font-semibold text-foreground mb-4">
                     Histórico Recente
                   </h2>
                   <div className="space-y-4">
                     {sessions.slice(0, 5).map((session, i) => (
                       <div
                         key={i}
-                        className="flex items-center justify-between py-2 border-b border-neutral-800 last:border-0"
+                        className="flex items-center justify-between py-2 border-b border-border last:border-0"
                       >
                         <div className="flex flex-col">
-                          <span className="text-sm font-medium text-white capitalize">
+                          <span className="text-sm font-medium text-foreground capitalize">
                             {session.mode === "focus"
                               ? "Foco"
                               : session.mode === "break"
                                 ? "Pausa"
                                 : "Pausa Longa"}
                           </span>
-                          <span className="text-xs text-neutral-500">
+                          <span className="text-xs text-subtle">
                             {session.completedAt?.toDate
                               ? session.completedAt
                                   .toDate()
@@ -148,13 +146,13 @@ export default function AnalyticsPage() {
                               : "Hoje"}
                           </span>
                         </div>
-                        <span className="text-sm font-mono text-neutral-300">
+                        <span className="text-sm font-mono text-foreground/80">
                           {Math.floor(session.duration / 60)}m
                         </span>
                       </div>
                     ))}
                     {sessions.length === 0 && (
-                      <p className="text-sm text-neutral-500 text-center py-4">
+                      <p className="text-sm text-subtle text-center py-4">
                         Nenhuma sessão registrada.
                       </p>
                     )}

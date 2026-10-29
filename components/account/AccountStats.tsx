@@ -38,7 +38,7 @@ export function AccountStats() {
   }, [user]);
 
   if (loading) {
-    return <div className="h-24 bg-neutral-900/50 rounded-2xl animate-pulse" />;
+    return <div className="h-24 bg-card/50 rounded-2xl animate-pulse" />;
   }
 
   // Level System Logic
@@ -46,8 +46,8 @@ export function AccountStats() {
     if (minutes < 60)
       return {
         name: "Iniciante",
-        color: "text-neutral-400",
-        bg: "bg-neutral-800",
+        color: "text-muted-foreground",
+        bg: "bg-secondary",
       };
     if (minutes < 300)
       return { name: "Focado", color: "text-blue-400", bg: "bg-blue-400/10" };
@@ -101,18 +101,18 @@ export function AccountStats() {
       {items.map((item, i) => (
         <div
           key={i}
-          className="bg-neutral-900/50 border border-neutral-800 rounded-xl p-4 flex flex-col items-center justify-center text-center gap-2 hover:bg-neutral-900 transition"
+          className="bg-card/50 border border-border rounded-xl p-4 flex flex-col items-center justify-center text-center gap-2 hover:bg-card transition"
         >
           <div className={`p-2 rounded-full ${item.bg} ${item.color}`}>
             <item.icon size={18} />
           </div>
           <div>
             <div
-              className={`text-lg font-bold leading-none ${i === 0 ? item.color : "text-white"}`}
+              className={`text-lg font-bold leading-none ${i === 0 ? item.color : "text-foreground"}`}
             >
               {item.value}
             </div>
-            <div className="text-xs text-neutral-500 mt-1">{item.label}</div>
+            <div className="text-xs text-subtle mt-1">{item.label}</div>
           </div>
         </div>
       ))}

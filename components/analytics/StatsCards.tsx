@@ -40,41 +40,41 @@ export function StatsCards({ sessions }: StatsCardsProps) {
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 shadow-sm">
+      <div className="rounded-xl border border-border bg-card/50 p-6 shadow-sm">
         <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <h3 className="tracking-tight text-sm font-medium text-neutral-400">
+          <h3 className="tracking-tight text-sm font-medium text-muted-foreground">
             Total Focado
           </h3>
           <span className="text-xl">⏱️</span>
         </div>
-        <div className="text-2xl font-bold text-white">
+        <div className="text-2xl font-bold text-foreground">
           {stats.hours}h {stats.minutes}m
         </div>
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-subtle">
           +20% em relação à semana passada
         </p>
       </div>
 
-      <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 shadow-sm">
+      <div className="rounded-xl border border-border bg-card/50 p-6 shadow-sm">
         <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <h3 className="tracking-tight text-sm font-medium text-neutral-400">
+          <h3 className="tracking-tight text-sm font-medium text-muted-foreground">
             Sessões
           </h3>
           <span className="text-xl">🎯</span>
         </div>
-        <div className="text-2xl font-bold text-white">{stats.sessions}</div>
-        <p className="text-xs text-neutral-500">Sessões completadas</p>
+        <div className="text-2xl font-bold text-foreground">{stats.sessions}</div>
+        <p className="text-xs text-subtle">Sessões completadas</p>
       </div>
 
-      <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 shadow-sm">
+      <div className="rounded-xl border border-border bg-card/50 p-6 shadow-sm">
         <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <h3 className="tracking-tight text-sm font-medium text-neutral-400">
+          <h3 className="tracking-tight text-sm font-medium text-muted-foreground">
             Dias Ativos
           </h3>
           <span className="text-xl">🔥</span>
         </div>
-        <div className="text-2xl font-bold text-white">{stats.days}</div>
-        <p className="text-xs text-neutral-500">Dias com foco registrado</p>
+        <div className="text-2xl font-bold text-foreground">{stats.days}</div>
+        <p className="text-xs text-subtle">Dias com foco registrado</p>
       </div>
     </div>
   );

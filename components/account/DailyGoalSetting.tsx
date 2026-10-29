@@ -20,7 +20,7 @@ export function DailyGoalSetting() {
   };
 
   return (
-    <div className="flex items-center justify-between p-4 text-neutral-300">
+    <div className="flex items-center justify-between p-4 text-foreground/80">
       <label htmlFor="daily-goal" className="flex items-center gap-3">
         <Target size={18} />
         <span>Meta diária (min)</span>
@@ -36,7 +36,7 @@ export function DailyGoalSetting() {
         onChange={(e) => setDraft(e.target.value)}
         onBlur={save}
         onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
-        className="w-20 rounded-lg bg-neutral-800 border border-neutral-700 px-2 py-1 text-right text-white focus:outline-none focus:border-neutral-500"
+        className="w-20 rounded-lg bg-secondary border border-input px-2 py-1 text-right text-foreground focus:outline-none focus:border-muted-foreground/50"
       />
     </div>
   );

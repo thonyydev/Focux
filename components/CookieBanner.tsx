@@ -47,9 +47,9 @@ export default function CookieBanner() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-2xl"
           >
-            <div className="relative flex flex-col items-center justify-between gap-4 rounded-xl border border-white/10 bg-black/80 px-6 py-4 shadow-2xl backdrop-blur-xl md:flex-row">
-              <div className="text-sm text-gray-300">
-                <strong className="block font-semibold text-white">
+            <div className="relative flex flex-col items-center justify-between gap-4 rounded-xl border border-border bg-popover/90 px-6 py-4 shadow-2xl backdrop-blur-xl md:flex-row">
+              <div className="text-sm text-foreground/80">
+                <strong className="block font-semibold text-foreground">
                   Respeitamos sua privacidade
                 </strong>
                 <p className="mt-1 leading-relaxed">
@@ -61,13 +61,13 @@ export default function CookieBanner() {
               <div className="flex shrink-0 items-center gap-3">
                 <button
                   onClick={declineCookies}
-                  className="rounded-lg px-4 py-2 text-sm font-medium text-gray-400 decoration-2 hover:text-white hover:underline"
+                  className="rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground decoration-2 hover:text-foreground hover:underline"
                 >
                   Recusar
                 </button>
                 <button
                   onClick={acceptCookies}
-                  className="rounded-lg bg-white px-5 py-2 text-sm font-semibold text-black transition hover:bg-gray-200"
+                  className="rounded-lg bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
                 >
                   Aceitar
                 </button>

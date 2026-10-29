@@ -426,7 +426,7 @@ export default function Timer() {
   if (!isInitialized) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="text-neutral-400">Carregando...</div>
+        <div className="text-muted-foreground">Carregando...</div>
       </div>
     );
   }
@@ -436,18 +436,18 @@ export default function Timer() {
       {/* Modal de Configurações */}
       {showSettingsModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="relative bg-gradient-to-br from-neutral-900 to-neutral-950 border border-neutral-700/50 rounded-2xl shadow-2xl p-6 sm:p-8 max-w-sm w-full animate-in zoom-in-95 duration-200">
+          <div className="relative bg-gradient-to-br from-card to-background border border-input/50 rounded-2xl shadow-2xl p-6 sm:p-8 max-w-sm w-full animate-in zoom-in-95 duration-200">
             {/* Glow de fundo */}
-            <div className="absolute inset-0 pointer-events-none opacity-10 blur-3xl bg-blue-500 rounded-2xl" />
+            <div className="absolute inset-0 pointer-events-none opacity-10 blur-3xl bg-break rounded-2xl" />
 
             {/* Conteúdo */}
             <div className="relative z-10 flex flex-col gap-4 sm:gap-6">
               {/* Cabeçalho */}
               <div className="flex flex-col items-center gap-3 text-center">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/50 flex items-center justify-center">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/40 flex items-center justify-center">
                   <span className="text-3xl sm:text-4xl">⚙️</span>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white">
+                <h3 className="text-xl sm:text-2xl font-bold text-foreground">
                   Configurações
                 </h3>
               </div>
@@ -455,7 +455,7 @@ export default function Timer() {
               {/* Inputs */}
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-1">
-                  <label className="text-sm font-medium text-neutral-300">
+                  <label className="text-sm font-medium text-foreground/80">
                     Foco (minutos)
                   </label>
                   <input
@@ -467,11 +467,11 @@ export default function Timer() {
                         focus: Number(e.target.value),
                       })
                     }
-                    className="w-full bg-neutral-800 border border-neutral-700/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className="w-full bg-secondary border border-input/50 rounded-lg px-4 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50"
                   />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <label className="text-sm font-medium text-neutral-300">
+                  <label className="text-sm font-medium text-foreground/80">
                     Pausa Curta (minutos)
                   </label>
                   <input
@@ -483,11 +483,11 @@ export default function Timer() {
                         break: Number(e.target.value),
                       })
                     }
-                    className="w-full bg-neutral-800 border border-neutral-700/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className="w-full bg-secondary border border-input/50 rounded-lg px-4 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50"
                   />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <label className="text-sm font-medium text-neutral-300">
+                  <label className="text-sm font-medium text-foreground/80">
                     Pausa Longa (minutos)
                   </label>
                   <input
@@ -499,7 +499,7 @@ export default function Timer() {
                         longBreak: Number(e.target.value),
                       })
                     }
-                    className="w-full bg-neutral-800 border border-neutral-700/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className="w-full bg-secondary border border-input/50 rounded-lg px-4 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50"
                   />
                 </div>
               </div>
@@ -508,13 +508,13 @@ export default function Timer() {
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <button
                   onClick={handleCancelSettings}
-                  className="flex-1 px-4 sm:px-6 py-3 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95"
+                  className="flex-1 px-4 sm:px-6 py-3 rounded-xl bg-secondary hover:bg-accent text-foreground font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={handleSaveSettings}
-                  className="flex-1 px-4 sm:px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-semibold shadow-lg shadow-blue-500/40 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                  className="flex-1 px-4 sm:px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg shadow-primary/30 transition-all duration-300 transform hover:scale-105 active:scale-95"
                 >
                   Salvar
                 </button>
@@ -527,22 +527,22 @@ export default function Timer() {
       {/* Modal de Confirmação */}
       {showResetModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="relative bg-gradient-to-br from-neutral-900 to-neutral-950 border border-neutral-700/50 rounded-2xl shadow-2xl p-6 sm:p-8 max-w-sm w-full animate-in zoom-in-95 duration-200">
+          <div className="relative bg-gradient-to-br from-card to-background border border-input/50 rounded-2xl shadow-2xl p-6 sm:p-8 max-w-sm w-full animate-in zoom-in-95 duration-200">
             {/* Glow de fundo */}
-            <div className="absolute inset-0 pointer-events-none opacity-10 blur-3xl bg-red-500 rounded-2xl" />
+            <div className="absolute inset-0 pointer-events-none opacity-10 blur-3xl bg-destructive rounded-2xl" />
 
             {/* Conteúdo */}
             <div className="relative z-10 flex flex-col gap-4 sm:gap-6">
               {/* Ícone e título */}
               <div className="flex flex-col items-center gap-3 text-center">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-red-500/20 to-rose-500/20 border border-red-500/50 flex items-center justify-center">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-destructive/20 to-destructive/20 border border-destructive/50 flex items-center justify-center">
                   <span className="text-3xl sm:text-4xl">⚠️</span>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white">
+                <h3 className="text-xl sm:text-2xl font-bold text-foreground">
                   Resetar Timer?
                 </h3>
               </div>
-              <p className="text-sm sm:text-base text-neutral-400 text-center">
+              <p className="text-sm sm:text-base text-muted-foreground text-center">
                 Tem certeza que deseja resetar o timer? Todo o progresso atual
                 será perdido.
               </p>
@@ -551,13 +551,13 @@ export default function Timer() {
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <button
                   onClick={() => setShowResetModal(false)}
-                  className="flex-1 px-4 sm:px-6 py-3 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95"
+                  className="flex-1 px-4 sm:px-6 py-3 rounded-xl bg-secondary hover:bg-accent text-foreground font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={confirmReset}
-                  className="flex-1 px-4 sm:px-6 py-3 rounded-xl bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white font-semibold shadow-lg shadow-red-500/40 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                  className="flex-1 px-4 sm:px-6 py-3 rounded-xl bg-destructive hover:bg-destructive/90 text-foreground font-semibold shadow-lg shadow-destructive/30 transition-all duration-300 transform hover:scale-105 active:scale-95"
                 >
                   Sim, resetar
                 </button>
@@ -568,29 +568,29 @@ export default function Timer() {
       )}
 
       <BlurFade duration={1} delay={0.5}>
-        <div className="relative flex flex-col items-center gap-4 sm:gap-6 md:gap-8 p-4 sm:p-6 md:p-10 rounded-3xl bg-gradient-to-br from-neutral-900/80 to-neutral-950/80 backdrop-blur-xl border border-neutral-700/50 shadow-2xl w-full max-w-sm sm:max-w-md md:max-w-lg overflow-hidden">
+        <div className="relative flex flex-col items-center gap-4 sm:gap-6 md:gap-8 p-4 sm:p-6 md:p-10 rounded-3xl bg-gradient-to-br from-card/80 to-background/80 backdrop-blur-xl border border-input/50 shadow-2xl w-full max-w-sm sm:max-w-md md:max-w-lg overflow-hidden">
           {/* Glow de fundo (não intercepta cliques) */}
           <div
             className={`absolute inset-0 pointer-events-none opacity-10 blur-3xl ${
               mode === "focus"
-                ? "bg-green-500"
+                ? "bg-primary"
                 : mode === "break"
-                  ? "bg-blue-500"
-                  : "bg-purple-500"
+                  ? "bg-break"
+                  : "bg-long-break"
             }`}
           />
 
           {/* Círculo decorativo de fundo (não intercepta cliques) */}
-          <div className="absolute inset-0 pointer-events-none rounded-full bg-gradient-to-br from-neutral-800/20 to-transparent blur-xl scale-110" />
+          <div className="absolute inset-0 pointer-events-none rounded-full bg-gradient-to-br from-secondary/20 to-transparent blur-xl scale-110" />
 
           {/* Seletor de Modo */}
-          <div className="relative flex gap-1.5 sm:gap-2 p-1 sm:p-1.5 bg-neutral-950/70 rounded-2xl border border-neutral-800/50 shadow-inner w-full">
+          <div className="relative flex gap-1.5 sm:gap-2 p-1 sm:p-1.5 bg-background/70 rounded-2xl border border-border/50 shadow-inner w-full">
             <button
               onClick={() => handleModeChange("focus")}
               className={`flex-1 px-3 sm:px-5 py-2 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${
                 mode === "focus"
-                  ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/40 scale-105"
-                  : "text-gray-400 hover:text-white hover:bg-neutral-800/50"
+                  ? "bg-focus text-background shadow-lg shadow-focus/30 scale-105"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
               }`}
             >
               <span className="hidden sm:inline">🎯 </span>Foco
@@ -599,8 +599,8 @@ export default function Timer() {
               onClick={() => handleModeChange("break")}
               className={`flex-1 px-3 sm:px-5 py-2 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${
                 mode === "break"
-                  ? "bg-gradient-to-r from-blue-500 to-cyan-600 text-white shadow-lg shadow-blue-500/40 scale-105"
-                  : "text-gray-400 hover:text-white hover:bg-neutral-800/50"
+                  ? "bg-break text-background shadow-lg shadow-break/30 scale-105"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
               }`}
             >
               <span className="hidden sm:inline">☕ </span>Pausa
@@ -609,8 +609,8 @@ export default function Timer() {
               onClick={() => handleModeChange("longBreak")}
               className={`flex-1 px-3 sm:px-5 py-2 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 ${
                 mode === "longBreak"
-                  ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg shadow-purple-500/40 scale-105"
-                  : "text-gray-400 hover:text-white hover:bg-neutral-800/50"
+                  ? "bg-long-break text-background shadow-lg shadow-long-break/30 scale-105"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
               }`}
             >
               <span className="hidden sm:inline">🌙 </span>Pausa Longa
@@ -620,7 +620,7 @@ export default function Timer() {
           {/* Timer Display com círculo de progresso visual */}
           <div className="relative flex items-center justify-center w-full">
             {/* Círculo decorativo de fundo */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-neutral-800/20 to-transparent blur-xl scale-110" />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-secondary/20 to-transparent blur-xl scale-110" />
 
             {/* Timer */}
             <div className="relative z-10 flex flex-col items-center gap-2 sm:gap-3 py-6 sm:py-0">
@@ -630,10 +630,10 @@ export default function Timer() {
               <div
                 className={`text-xs sm:text-sm font-medium tracking-widest uppercase ${
                   mode === "focus"
-                    ? "text-green-400"
+                    ? "text-primary"
                     : mode === "break"
-                      ? "text-blue-400"
-                      : "text-purple-400"
+                      ? "text-break"
+                      : "text-long-break"
                 }`}
               >
                 {mode === "focus"
@@ -652,12 +652,12 @@ export default function Timer() {
                 key={i}
                 className={`relative w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-500 ${
                   i < focusCount
-                    ? "bg-gradient-to-r from-green-400 to-emerald-500 shadow-lg shadow-green-500/60 scale-110"
-                    : "bg-neutral-800 border border-neutral-700"
+                    ? "bg-focus shadow-lg shadow-focus/60 scale-110"
+                    : "bg-secondary border border-input"
                 }`}
               >
                 {i < focusCount && (
-                  <div className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-75" />
+                  <div className="absolute inset-0 rounded-full bg-primary animate-ping opacity-75" />
                 )}
               </div>
             ))}
@@ -671,8 +671,8 @@ export default function Timer() {
               disabled={seconds === 0}
               className={`w-full sm:flex-1 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-sm sm:text-base transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-xl ${
                 running
-                  ? "bg-gradient-to-r from-red-500 to-rose-600 text-white hover:from-red-600 hover:to-rose-700 shadow-red-500/40"
-                  : "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 shadow-green-500/40"
+                  ? "bg-destructive text-foreground hover:bg-destructive/90 shadow-destructive/30"
+                  : "bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary/30"
               }`}
             >
               {running ? "⏸ Pausar" : "▶ Iniciar"}
@@ -682,13 +682,13 @@ export default function Timer() {
               <button
                 onClick={reset}
                 aria-keyshortcuts="R"
-                className="flex-1 sm:flex-none px-5 sm:px-6 py-3 sm:py-4 rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900 text-white hover:from-neutral-700 hover:to-neutral-800 transition-all duration-300 transform hover:scale-105 active:scale-95 font-bold border border-neutral-700/50 shadow-lg text-xl"
+                className="flex-1 sm:flex-none px-5 sm:px-6 py-3 sm:py-4 rounded-xl bg-gradient-to-br from-secondary to-card text-foreground hover:from-accent hover:to-secondary transition-all duration-300 transform hover:scale-105 active:scale-95 font-bold border border-input/50 shadow-lg text-xl"
               >
                 ↻
               </button>
               <button
                 onClick={handleOpenSettings}
-                className="flex-1 sm:flex-none px-5 sm:px-6 py-3 sm:py-4 rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900 text-white hover:from-neutral-700 hover:to-neutral-800 transition-all duration-300 transform hover:scale-105 active:scale-95 font-bold border border-neutral-700/50 shadow-lg text-xl"
+                className="flex-1 sm:flex-none px-5 sm:px-6 py-3 sm:py-4 rounded-xl bg-gradient-to-br from-secondary to-card text-foreground hover:from-accent hover:to-secondary transition-all duration-300 transform hover:scale-105 active:scale-95 font-bold border border-input/50 shadow-lg text-xl"
               >
                 ⚙️
               </button>
@@ -696,7 +696,7 @@ export default function Timer() {
           </div>
 
           {/* Som ambiente */}
-          <label className="flex items-center gap-2 text-xs sm:text-sm text-neutral-400">
+          <label className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
             <span aria-hidden="true">🎧</span>
             <select
               aria-label="Som ambiente (toca durante o foco)"
@@ -706,7 +706,7 @@ export default function Timer() {
                 setAmbientChoice(value);
                 updatePreferences({ ambientSound: value });
               }}
-              className="rounded-lg bg-neutral-900 border border-neutral-700 px-2 py-1 text-neutral-200 focus:outline-none focus:border-neutral-500"
+              className="rounded-lg bg-card border border-input px-2 py-1 text-foreground/90 focus:outline-none focus:border-muted-foreground/50"
             >
               {Object.entries(AMBIENT_LABELS).map(([value, label]) => (
                 <option key={value} value={value}>
@@ -717,15 +717,15 @@ export default function Timer() {
           </label>
 
           {/* Estatísticas */}
-          <div className="relative flex flex-col items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-xl bg-neutral-900/50 border border-neutral-800/50">
-            <div className="text-xs sm:text-sm font-medium text-neutral-400 text-center">
-              <span className="text-white font-bold">{focusCount}</span> de{" "}
-              <span className="text-white font-bold">4</span> sessões até a
+          <div className="relative flex flex-col items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-xl bg-card/50 border border-border/50">
+            <div className="text-xs sm:text-sm font-medium text-muted-foreground text-center">
+              <span className="text-foreground font-bold">{focusCount}</span> de{" "}
+              <span className="text-foreground font-bold">4</span> sessões até a
               pausa longa
             </div>
           </div>
 
-          <p className="hidden sm:block text-xs text-neutral-500 text-center">
+          <p className="hidden sm:block text-xs text-subtle text-center">
             Atalhos: Espaço inicia/pausa · R reinicia · 1, 2, 3 trocam o modo
           </p>
 

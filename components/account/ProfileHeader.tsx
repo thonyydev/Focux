@@ -49,11 +49,11 @@ export function ProfileHeader() {
       : "U";
 
   return (
-    <div className="flex items-center gap-6 p-6 bg-neutral-900/50 border border-neutral-800 rounded-2xl">
+    <div className="flex items-center gap-6 p-6 bg-card/50 border border-border rounded-2xl">
       {/* Avatar */}
       <div className="relative">
-        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-neutral-800 to-neutral-900 border border-neutral-700 flex items-center justify-center shadow-inner">
-          <span className="text-2xl font-bold text-white tracking-wider">
+        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-secondary to-card border border-input flex items-center justify-center shadow-inner">
+          <span className="text-2xl font-bold text-foreground tracking-wider">
             {displayInitials}
           </span>
         </div>
@@ -70,19 +70,19 @@ export function ProfileHeader() {
                 value={newName}
                 maxLength={20}
                 onChange={(e) => setNewName(e.target.value)}
-                className="bg-neutral-800 border border-neutral-700 text-white px-3 py-1 rounded-lg text-lg font-semibold focus:outline-none focus:border-neutral-600 w-full min-w-0"
+                className="bg-secondary border border-input text-foreground px-3 py-1 rounded-lg text-lg font-semibold focus:outline-none focus:border-muted-foreground/40 w-full min-w-0"
                 placeholder="Seu nome"
               />
               <div className="flex items-center gap-1 shrink-0">
                 <button
                   onClick={handleSave}
-                  className="p-1.5 bg-green-500/10 text-green-500 rounded-md hover:bg-green-500/20 transition"
+                  className="p-1.5 bg-primary/10 text-primary rounded-md hover:bg-primary/20 transition"
                 >
                   <Check size={16} />
                 </button>
                 <button
                   onClick={handleCancel}
-                  className="p-1.5 bg-red-500/10 text-red-500 rounded-md hover:bg-red-500/20 transition"
+                  className="p-1.5 bg-destructive/10 text-destructive rounded-md hover:bg-destructive/20 transition"
                 >
                   <X size={16} />
                 </button>
@@ -90,12 +90,12 @@ export function ProfileHeader() {
             </div>
           ) : (
             <div className="flex items-center gap-3 group">
-              <h2 className="text-2xl font-bold text-white">
+              <h2 className="text-2xl font-bold text-foreground">
                 {displayName || "Usuário Focux"}
               </h2>
               <button
                 onClick={() => setIsEditing(true)}
-                className="opacity-0 group-hover:opacity-100 p-1 text-neutral-500 hover:text-white transition-all transform translate-x-1 group-hover:translate-x-0"
+                className="opacity-0 group-hover:opacity-100 p-1 text-subtle hover:text-foreground transition-all transform translate-x-1 group-hover:translate-x-0"
               >
                 <Edit2 size={16} />
               </button>
@@ -103,7 +103,7 @@ export function ProfileHeader() {
           )}
         </div>
 
-        <p className="text-sm text-neutral-500 font-mono">{user?.email}</p>
+        <p className="text-sm text-subtle font-mono">{user?.email}</p>
       </div>
     </div>
   );
